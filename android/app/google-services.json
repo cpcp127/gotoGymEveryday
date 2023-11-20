@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1076846971874",
+    "project_id": "every-calendar-2cc3e",
+    "storage_bucket": "every-calendar-2cc3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1076846971874:android:6b3909705aa9b9220d47bb",
+        "android_client_info": {
+          "package_name": "com.example.calendar_every"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzm1URteaNkhjuE-32DAx1c7Hyovg6Kiw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
