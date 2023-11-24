@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:calendar_every/provider/home_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -27,7 +28,8 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.only(right: 8),
                   child: GestureDetector(
                     onTap: () async{
-                     await provider.getFireStore();
+                     context.go('/writeToday');
+                      //await provider.getFireStore();
                     },
                     child: SizedBox(
                         width: 44,
