@@ -26,10 +26,9 @@ class HomeProvider extends ChangeNotifier {
 
   get getEventsForDay => _getEventsForDay;
 
-  Future<void> getFireStore() async{
+  Future<void> getFireStore() async {
     _events.clear();
-
-   await FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('cpcp127@naver.com')
         .doc('운동기록')
         .collection(DateFormat('yyyy년MM월').format(DateTime.now()))

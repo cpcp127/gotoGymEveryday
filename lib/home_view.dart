@@ -1,4 +1,3 @@
-import 'dart:collection';
 
 import 'package:calendar_every/provider/home_provider.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -114,9 +114,9 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
 
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   final auth = Provider.of<HomeProvider>(context, listen: false);
-    //   auth.getFireStore();
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final homeProvider = Provider.of<HomeProvider>(context, listen: false);
+      await homeProvider.getFireStore();
+    });
   }
 }
