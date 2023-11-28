@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:calendar_every/provider/write_today_work_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WriteTodayWorkView extends StatefulWidget {
   const WriteTodayWorkView({super.key});
@@ -75,7 +79,67 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
               builder: (context, provider, child) {
                 return provider.pageIndex == 0
                     ? stepOne(provider)
-                    : stepTwo(provider);
+                    : provider.pageIndex == 1
+                        ? stepTwo(provider)
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Row(),
+                              GestureDetector(
+                                onTap: () async {
+                                  await provider.selectMultiImage();
+                                },
+                                child: provider.imageList.isEmpty
+                                    ? Container(
+                                        width: 220,
+                                        height: 220,
+                                        color: Colors.red,
+                                        child: Icon(Icons.add),
+                                      )
+                                    : Container(
+                                        width: 220,
+                                        height: 220,
+                                        child: PageView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            controller: provider.pageController,
+                                            itemCount: provider.imageList.length,
+                                            itemBuilder: (context, index) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(12),
+                                                  image: DecorationImage(
+                                                    image: FileImage(
+                                                      File(provider
+                                                          .imageList[index]
+                                                          .path),
+                                                    ),fit: BoxFit.cover
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                      ),
+                              ),
+                              SizedBox(height: 16),
+                              Container(
+                                width: 220,
+                                alignment: Alignment.center,
+                                child: SmoothPageIndicator(
+                                    controller: provider.pageController,
+                                    count: provider.imageList.length,
+                                    effect: const ScrollingDotsEffect(
+                                      activeDotColor: Colors.indigoAccent,
+                                      activeStrokeWidth: 10,
+                                      activeDotScale: 1.7,
+                                      maxVisibleDots: 5,
+                                      radius: 16,
+                                      spacing: 10,
+                                      dotHeight: 16,
+                                      dotWidth: 16,
+                                    )),
+                              )
+                            ],
+                          );
               },
             ),
           ),

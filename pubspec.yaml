@@ -44,6 +44,8 @@ dependencies:
   device_info_plus: ^9.1.0
   firebase_auth: ^4.14.0
   intl: ^0.18.1
+  image_picker: ^1.0.4
+  smooth_page_indicator: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
