@@ -20,130 +20,153 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: Container(
-        color: Colors.white,
-        child: SafeArea(
-          child: Scaffold(
-            bottomSheet: Consumer<WriteTodayWorkProvider>(
-                builder: (context, provider, child) {
-              return Container(
-                height: 80,
-                width: double.infinity,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Visibility(
-                          visible: provider.pageIndex == 0 ? false : true,
-                          child: GestureDetector(
-                            onTap: () {
-                              provider.stepPrevious();
-                            },
-                            child: Container(
-                              child: const Center(child: Text('이전')),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.cyan,
+      child: Stack(
+        children: [
+          Container(
+            color: Colors.white,
+            child: SafeArea(
+              child: Scaffold(
+                bottomSheet: Consumer<WriteTodayWorkProvider>(
+                    builder: (context, provider, child) {
+                  return Container(
+                    height: 80,
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Visibility(
+                              visible: provider.pageIndex == 0 ? false : true,
+                              child: GestureDetector(
+                                onTap: () {
+                                  provider.stepPrevious();
+                                },
+                                child: Container(
+                                  child: const Center(child: Text('이전')),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.cyan,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            provider.stepContinue(context);
-                          },
-                          child: Container(
-                            child: const Center(child: Text('다음')),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.cyan,
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                provider.stepContinue(context);
+                              },
+                              child: Container(
+                                child: const Center(child: Text('다음')),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.cyan,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          const SizedBox(width: 16),
+                        ],
                       ),
-                      const SizedBox(width: 16),
-                    ],
+                    ),
+                  );
+                }),
+                body: Consumer<WriteTodayWorkProvider>(
+                  builder: (context, provider, child) {
+                    return provider.pageIndex == 0
+                        ? stepOne(provider)
+                        : provider.pageIndex == 1
+                            ? stepTwo(provider)
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Row(),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await provider.selectMultiImage();
+                                    },
+                                    child: provider.imageList.isEmpty
+                                        ? Container(
+                                            width: 220,
+                                            height: 220,
+                                            color: Colors.red,
+                                            child: Icon(Icons.add),
+                                          )
+                                        : Container(
+                                            width: 220,
+                                            height: 220,
+                                            child: PageView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                controller:
+                                                    provider.pageController,
+                                                itemCount:
+                                                    provider.imageList.length,
+                                                itemBuilder: (context, index) {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                      image: DecorationImage(
+                                                          image: FileImage(
+                                                            File(provider
+                                                                .imageList[
+                                                                    index]
+                                                                .path),
+                                                          ),
+                                                          fit: BoxFit.cover),
+                                                    ),
+                                                  );
+                                                }),
+                                          ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  Container(
+                                    width: 220,
+                                    alignment: Alignment.center,
+                                    child: SmoothPageIndicator(
+                                        controller: provider.pageController,
+                                        count: provider.imageList.length,
+                                        effect: const ScrollingDotsEffect(
+                                          activeDotColor: Colors.indigoAccent,
+                                          activeStrokeWidth: 10,
+                                          activeDotScale: 1.7,
+                                          maxVisibleDots: 5,
+                                          radius: 16,
+                                          spacing: 10,
+                                          dotHeight: 16,
+                                          dotWidth: 16,
+                                        )),
+                                  )
+                                ],
+                              );
+                  },
+                ),
+              ),
+            ),
+          ),
+          Consumer<WriteTodayWorkProvider>(
+            builder: (context, provider, child) {
+              return Visibility(
+                visible: provider.isLoading,
+                child: Container(
+                  color: Colors.black.withOpacity(0.6),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ),
               );
-            }),
-            body: Consumer<WriteTodayWorkProvider>(
-              builder: (context, provider, child) {
-                return provider.pageIndex == 0
-                    ? stepOne(provider)
-                    : provider.pageIndex == 1
-                        ? stepTwo(provider)
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Row(),
-                              GestureDetector(
-                                onTap: () async {
-                                  await provider.selectMultiImage();
-                                },
-                                child: provider.imageList.isEmpty
-                                    ? Container(
-                                        width: 220,
-                                        height: 220,
-                                        color: Colors.red,
-                                        child: Icon(Icons.add),
-                                      )
-                                    : Container(
-                                        width: 220,
-                                        height: 220,
-                                        child: PageView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            controller: provider.pageController,
-                                            itemCount: provider.imageList.length,
-                                            itemBuilder: (context, index) {
-                                              return Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(12),
-                                                  image: DecorationImage(
-                                                    image: FileImage(
-                                                      File(provider
-                                                          .imageList[index]
-                                                          .path),
-                                                    ),fit: BoxFit.cover
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-                                      ),
-                              ),
-                              SizedBox(height: 16),
-                              Container(
-                                width: 220,
-                                alignment: Alignment.center,
-                                child: SmoothPageIndicator(
-                                    controller: provider.pageController,
-                                    count: provider.imageList.length,
-                                    effect: const ScrollingDotsEffect(
-                                      activeDotColor: Colors.indigoAccent,
-                                      activeStrokeWidth: 10,
-                                      activeDotScale: 1.7,
-                                      maxVisibleDots: 5,
-                                      radius: 16,
-                                      spacing: 10,
-                                      dotHeight: 16,
-                                      dotWidth: 16,
-                                    )),
-                              )
-                            ],
-                          );
-              },
-            ),
+            },
           ),
-        ),
+        ],
       ),
     );
   }
@@ -277,5 +300,20 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
         ),
       ],
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final provider =
+          Provider.of<WriteTodayWorkProvider>(context, listen: false);
+      provider.resetProvider();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
