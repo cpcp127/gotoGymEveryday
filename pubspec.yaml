@@ -99,5 +99,14 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
+  fonts:
+    - family: Agro
+      fonts:
+        - asset: assets/fonts/Agro-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Agro-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Agro-Bold.ttf
+          weight: 700
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
