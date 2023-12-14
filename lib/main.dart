@@ -1,5 +1,7 @@
 import 'package:calendar_every/home_view.dart';
+import 'package:calendar_every/provider/chart_provider.dart';
 import 'package:calendar_every/provider/home_provider.dart';
+import 'package:calendar_every/provider/show_calendar_provider.dart';
 import 'package:calendar_every/provider/start_provider.dart';
 import 'package:calendar_every/provider/write_today_work_provider.dart';
 import 'package:calendar_every/start_view.dart';
@@ -29,6 +31,12 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => WriteTodayWorkProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ShowCalendarProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ChartProvider(),
         ),
       ],
       child: const MyApp(),

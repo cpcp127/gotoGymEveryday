@@ -1,3 +1,4 @@
+import 'package:calendar_every/provider/show_calendar_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -16,76 +17,94 @@ class ShowCalendarView extends StatefulWidget {
 }
 
 class _ShowCalendarViewState extends State<ShowCalendarView> {
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: GestureDetector(
-                  onTap: () async {
-                    context.read<HomeProvider>().gotoWriteToday(context);
-                  },
-                  child: const SizedBox(
-                      width: 44,
-                      height: 44,
-                      child: Center(
-                          child: Icon(
-                        Icons.add,
-                        size: 30,
-                      ))),
+    return Stack(
+      children: [
+        Container(
+          color: Colors.white,
+          child: SafeArea(
+            child: Scaffold(
+              appBar: AppBar(
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: GestureDetector(
+                      onTap: () async {
+                        context.read<ShowCalendarProvider>().gotoWriteToday(context);
+                      },
+                      child: const SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: Center(
+                              child: Icon(
+                            Icons.add,
+                            size: 30,
+                          ))),
+                    ),
+                  ),
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Consumer<ShowCalendarProvider>(builder: (context, provider, child) {
+                      return TableCalendar(
+                        locale: 'ko_KR',
+                        focusedDay: provider.focusDay,
+                        firstDay: DateTime.utc(2021, 10, 16),
+                        lastDay: DateTime.utc(2030, 3, 14),
+                        calendarStyle: const CalendarStyle(
+                            selectedDecoration: BoxDecoration(
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                        )),
+                        headerStyle: const HeaderStyle(
+                            titleCentered: true, formatButtonVisible: false),
+                        selectedDayPredicate: (day) {
+                          return isSameDay(provider.selectDay, day);
+                        },
+                        onPageChanged: (DateTime date) async {
+                          provider.changePage(date);
+                        },
+                        onDaySelected: (selectDay, focusDay) {
+                          provider.selectingDay(selectDay, focusDay);
+
+                          provider.events.containsKey(selectDay)
+                              ? workBottomSheet(context, selectDay, provider)
+                              : null;
+                        },
+                        eventLoader: (day) {
+                          return provider.getEventsForDay(day);
+                        },
+                      );
+                    }),
+                  ],
                 ),
               ),
-            ],
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Consumer<HomeProvider>(builder: (context, provider, child) {
-                  return TableCalendar(
-                    locale: 'ko_KR',
-                    focusedDay: provider.focusDay,
-                    firstDay: DateTime.utc(2021, 10, 16),
-                    lastDay: DateTime.utc(2030, 3, 14),
-                    calendarStyle: const CalendarStyle(
-                        selectedDecoration: BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                    )),
-                    headerStyle: const HeaderStyle(
-                        titleCentered: true, formatButtonVisible: false),
-                    selectedDayPredicate: (day) {
-                      return isSameDay(provider.selectDay, day);
-                    },
-                    onPageChanged: (DateTime date) async {
-                      provider.changePage(date);
-                    },
-                    onDaySelected: (selectDay, focusDay) {
-                      provider.selectingDay(selectDay, focusDay);
-
-                      provider.events.containsKey(selectDay)
-                          ? workBottomSheet(context, selectDay, provider)
-                          : null;
-                    },
-                    eventLoader: (day) {
-                      return provider.getEventsForDay(day);
-                    },
-                  );
-                }),
-              ],
             ),
           ),
         ),
-      ),
+        Consumer<ShowCalendarProvider>(
+          builder: (context, provider, child) {
+            return Visibility(
+              visible: provider.isLoading,
+              child: Container(
+                color: Colors.black.withOpacity(0.6),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 
   Future<dynamic> workBottomSheet(
-      BuildContext context, DateTime selectDay, HomeProvider provider) {
+      BuildContext context, DateTime selectDay, ShowCalendarProvider provider) {
     return showModalBottomSheet(
         isScrollControlled: true,
         barrierColor: Colors.black.withOpacity(0.2),
@@ -110,64 +129,66 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                     Expanded(child: SizedBox()),
                     GestureDetector(
                       onTap: () {
-                        context.read<HomeProvider>().deleteWorkRecord(selectDay);
-                        // showDialog(
-                        //     context: context,
-                        //     builder: (context) {
-                        //       return Dialog(
-                        //         child: Container(
-                        //           width: 200,
-                        //           //height: 160,
-                        //           decoration: BoxDecoration(
-                        //             borderRadius: BorderRadius.circular(16),
-                        //             color: Colors.amber,
-                        //           ),
-                        //           child: Column(
-                        //             mainAxisAlignment: MainAxisAlignment.start,
-                        //             mainAxisSize: MainAxisSize.min,
-                        //             crossAxisAlignment:
-                        //                 CrossAxisAlignment.start,
-                        //             children: [
-                        //               Text('삭제'),
-                        //               SizedBox(height: 16),
-                        //               Text(
-                        //                   '${DateFormat('yyyy년 MM월 dd일').format(selectDay)}의 기록을 삭제하시겠어요?'),
-                        //               SizedBox(height: 16),
-                        //               Row(
-                        //                 children: [
-                        //                   Expanded(child: SizedBox()),
-                        //                   GestureDetector(
-                        //                     onTap: () {
-                        //                       Navigator.pop(context);
-                        //                       Navigator.pop(context);
-                        //                     },
-                        //                     child: Container(
-                        //                       width: 50,
-                        //                       height: 44,
-                        //                       color: Colors.red,
-                        //                       child: Center(child: Text('취소')),
-                        //                     ),
-                        //                   ),
-                        //                   SizedBox(width: 10),
-                        //                   GestureDetector(
-                        //                     onTap: () {
-                        //                       Navigator.pop(context);
-                        //                       Navigator.pop(context);
-                        //                     },
-                        //                     child: Container(
-                        //                       width: 50,
-                        //                       height: 44,
-                        //                       color: Colors.red,
-                        //                       child: Center(child: Text('삭제')),
-                        //                     ),
-                        //                   )
-                        //                 ],
-                        //               )
-                        //             ],
-                        //           ),
-                        //         ),
-                        //       );
-                        //     });
+
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                child: Container(
+                                  width: 200,
+                                  //height: 160,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: Colors.amber,
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('삭제'),
+                                      SizedBox(height: 16),
+                                      Text(
+                                          '${DateFormat('yyyy년 MM월 dd일').format(selectDay)}의 기록을 삭제하시겠어요?'),
+                                      SizedBox(height: 16),
+                                      Row(
+                                        children: [
+                                          Expanded(child: SizedBox()),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            },
+                                            child: Container(
+                                              width: 50,
+                                              height: 44,
+                                              color: Colors.red,
+                                              child: Center(child: Text('취소')),
+                                            ),
+                                          ),
+                                          SizedBox(width: 10),
+                                          GestureDetector(
+                                            onTap: () async{
+                                             await context.read<ShowCalendarProvider>().deleteWorkRecord(selectDay).then((value){
+                                               Navigator.pop(context);
+                                               Navigator.pop(context);
+                                             });
+                                            },
+                                            child: Container(
+                                              width: 50,
+                                              height: 44,
+                                              color: Colors.red,
+                                              child: Center(child: Text('삭제')),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
                       },
                       child: Container(
                         width: 44,
@@ -232,5 +253,16 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
             ),
           );
         });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final showCalendarProvider = Provider.of<ShowCalendarProvider>(context, listen: false);
+
+      await showCalendarProvider.getFireStore(showCalendarProvider.focusDay);
+    });
   }
 }

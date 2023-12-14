@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:calendar_every/home_tab/show_calendar_view.dart';
 import 'package:calendar_every/provider/home_provider.dart';
+import 'package:calendar_every/provider/show_calendar_provider.dart';
 import 'package:calendar_every/toast/show_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -20,14 +22,20 @@ class WriteTodayWorkProvider extends ChangeNotifier {
   bool _isLoading = false;
 
   List<String> get workList => _workList;
+
   List<String> get imageUrlList => _imageUrlList;
+
   int get pageIndex => _pageIndex;
+
   TextEditingController get textEditingController => _textEditingController;
+
   List<XFile> get imageList => _imageList;
+
   PageController get pageController => _pageController;
+
   bool get isLoading => _isLoading;
 
-  Future<void> stepContinue(context) async {
+  Future<void> stepContinue(context,DateTime date) async {
     if (_pageIndex == 0) {
       if (_workList.isEmpty) {
         showToast('1개 이상 선택해 주세요');
@@ -39,25 +47,29 @@ class WriteTodayWorkProvider extends ChangeNotifier {
     } else {
       _isLoading = true;
       notifyListeners();
-      for(int i =0 ;i<imageList.length;i++){
-        await FirebaseStorage.instance.ref('cpcp127@naver.com ${DateFormat('yyyy년MM월dd일').format(DateTime.now())} $i').putFile(File(imageList[i].path)).then((val) async {
+      for (int i = 0; i < imageList.length; i++) {
+        await FirebaseStorage.instance
+            .ref(
+                'cpcp127@naver.com ${DateFormat('yyyy년MM월dd일').format(date)}/cpcp127@naver.com ${DateFormat('yyyy년MM월dd일').format(date)} $i')
+            .putFile(File(imageList[i].path))
+            .then((val) async {
           imageUrlList.add(await val.ref.getDownloadURL());
         });
       }
-
       //storage에 사진 저장후 사진주소를 받아서 Firestore에 저장
       await FirebaseFirestore.instance
           .collection('cpcp127@naver.com')
           .doc('운동기록')
-          .collection(DateFormat('yyyy년MM월').format(DateTime.now()))
-          .add({
-        'date': DateTime.now().toLocal(),
-        'datetime': (DateFormat('yyyy년MM월dd일').format(DateTime.now())),
+          .collection(DateFormat('yyyy년MM월').format(date)).doc(DateFormat('yyyy년MM월dd일').format(date))
+          .set({
+        'date': date.toLocal(),
+        'datetime': (DateFormat('yyyy년MM월dd일').format(date)),
         'title': _workList.toString(),
         'subtitle': textEditingController.text,
-        'photoList':imageUrlList
+        'photoList': imageUrlList
       }).then((value) async {
-        await Provider.of<HomeProvider>(context, listen: false).getFireStore(DateTime.now());
+        await Provider.of<ShowCalendarProvider>(context, listen: false)
+            .getFireStore(date);
         Navigator.of(context).pop();
       });
     }
@@ -80,15 +92,14 @@ class WriteTodayWorkProvider extends ChangeNotifier {
   }
 
   Future<void> selectMultiImage() async {
-    await picker.pickMultiImage(maxHeight: 1024,maxWidth: 1024).then((value){
-      if(imageList.length+(value.length)>=5){
+    await picker.pickMultiImage(maxHeight: 1024, maxWidth: 1024).then((value) {
+      if (imageList.length + (value.length) >= 5) {
         showToast('5장 이하로 선택해주세요');
-      }else{
+      } else {
         for (int i = 0; i < value.length; i++) {
           _imageList.add(value[i]);
         }
       }
-
     });
     notifyListeners();
   }
@@ -96,12 +107,11 @@ class WriteTodayWorkProvider extends ChangeNotifier {
   void resetProvider() {
     _workList.clear();
     _imageUrlList.clear();
-    _pageIndex=0;
+    _pageIndex = 0;
     _imageList = [];
     _imageUrlList = [];
     _textEditingController.clear();
-    _isLoading=false;
+    _isLoading = false;
     notifyListeners();
   }
-
 }

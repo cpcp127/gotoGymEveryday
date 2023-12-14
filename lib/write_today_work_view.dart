@@ -60,7 +60,7 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                provider.stepContinue(context);
+                                provider.stepContinue(context,DateTime.now());
                               },
                               child: Container(
                                 child: const Center(child: Text('다음')),
