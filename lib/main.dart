@@ -1,9 +1,11 @@
 import 'package:calendar_every/home_view.dart';
 import 'package:calendar_every/provider/chart_provider.dart';
 import 'package:calendar_every/provider/home_provider.dart';
+import 'package:calendar_every/provider/register_provider.dart';
 import 'package:calendar_every/provider/show_calendar_provider.dart';
 import 'package:calendar_every/provider/start_provider.dart';
 import 'package:calendar_every/provider/write_today_work_provider.dart';
+import 'package:calendar_every/register_view.dart';
 import 'package:calendar_every/start_view.dart';
 import 'package:calendar_every/write_today_work_view.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,6 +40,9 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => ChartProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => RegisterProvider(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -51,6 +56,10 @@ final GoRouter _router = GoRouter(
       path: '/',
       builder: (context, state) => const HomeView(),
       routes: [
+        GoRoute(
+          path: 'register',
+          builder: (context, state) => const RegisterView(),
+        ),
         GoRoute(
           path: 'writeToday',
           builder: (context, state) => const WriteTodayWorkView(),
