@@ -87,6 +87,10 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         fontFamily: 'Agro',
         useMaterial3: true,
+        bottomSheetTheme: BottomSheetThemeData(
+          elevation: 0,
+          backgroundColor: Colors.white,
+        ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           elevation: 1,
           backgroundColor: Colors.white,
