@@ -1,13 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../toast/show_toast.dart';
 
 class RegisterProvider extends ChangeNotifier {
+  final ImagePicker picker = ImagePicker();
+  int _pageIndex = 0;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _pwdController = TextEditingController();
   TextEditingController _pwdCheckController = TextEditingController();
   TextEditingController _nickController = TextEditingController();
+  List<XFile> _imageList = [];
   FocusNode _emailNode = FocusNode();
   FocusNode _pwdNode = FocusNode();
   FocusNode _pwdCheckNode = FocusNode();
@@ -19,6 +23,7 @@ class RegisterProvider extends ChangeNotifier {
   bool _isEmailExists = false;
   bool _isKeyboard = false;
 
+  int get pageIndex => _pageIndex;
   TextEditingController get emailController => _emailController;
 
   TextEditingController get pwdController => _pwdController;
@@ -30,7 +35,7 @@ class RegisterProvider extends ChangeNotifier {
   FocusNode get emailNode => _emailNode;
 
   FocusNode get pwdNode => _pwdNode;
-
+  List<XFile> get imageList => _imageList;
   FocusNode get pwdCheckNode => _pwdCheckNode;
 
   FocusNode get nickNode => _nickNode;
@@ -63,6 +68,11 @@ class RegisterProvider extends ChangeNotifier {
         pwdCheckFormKey.currentState!.validate();
       }
     });
+    nickNode.addListener(() async {
+      if (!nickNode.hasFocus) {
+        nickFormKey.currentState!.validate();
+      }
+    });
   }
 
   Future<void> registerEmail() async {
@@ -76,9 +86,45 @@ class RegisterProvider extends ChangeNotifier {
         _isEmailExists = true;
         emailFormKey.currentState!.validate();
         showToast('이미 등록된 이메일 입니다');
-
+      } else {
+        showToast('회원가입에 실패했습니다');
       }
     });
+    notifyListeners();
+  }
+
+  Future<void> selectProfileImage() async {
+    await picker.pickImage(source: ImageSource.gallery,maxHeight: 1024, maxWidth: 1024).then((value){
+      _imageList.clear();
+      _imageList.add(value!);
+    });
+    notifyListeners();
+  }
+
+  void stepPrevious() async{
+    _pageIndex=0;
+  }
+
+  void stepNext()async{
+    if(pageIndex==0){
+      if(nickFormKey.currentState!.validate()==false || imageList.isEmpty){
+        showToast('닉네임,프로필 사진을 작성해주세요');
+      }else{
+        _pageIndex=1;
+      }
+
+    }else{
+      registerEmail();
+    }
+    notifyListeners();
+  }
+  void resetProvider() {
+    _pageIndex=0;
+    _emailController.clear();
+    _pwdController.clear();
+    _pwdCheckController.clear();
+    _nickController.clear();
+    _imageList.clear();
     notifyListeners();
   }
 }
