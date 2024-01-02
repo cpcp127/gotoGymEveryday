@@ -96,6 +96,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.only(right: 16),
                       child: Row(
@@ -115,7 +116,19 @@ class _HomeViewState extends State<HomeView> {
                           )
                         ],
                       ),
-                    )
+                    ),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: (){
+                        provider.loginFirebase();
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 60,
+                        child: Center(child: Text('로그인')),
+                        color: Colors.red,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -131,9 +144,11 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
 
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-    //   final homeProvider = Provider.of<HomeProvider>(context, listen: false);
-    //   await homeProvider.getFireStore(DateTime.now());
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final homeProvider = Provider.of<HomeProvider>(context, listen: false);
+      await homeProvider.autoLoginCheck();
+      print(homeProvider.autoLogin);
+    });
+
   }
 }

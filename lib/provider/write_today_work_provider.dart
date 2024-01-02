@@ -69,7 +69,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
         'photoList': imageUrlList
       }).then((value) async {
         await Provider.of<ShowCalendarProvider>(context, listen: false)
-            .getFireStore(date);
+            .getFireStore(date,context);
         Navigator.of(context).pop();
       });
     }

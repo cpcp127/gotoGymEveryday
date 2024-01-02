@@ -66,7 +66,7 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                           return isSameDay(provider.selectDay, day);
                         },
                         onPageChanged: (DateTime date) async {
-                          provider.changePage(date);
+                          provider.changePage(date,context);
                         },
                         onDaySelected: (selectDay, focusDay) {
                           provider.selectingDay(selectDay, focusDay);
@@ -170,7 +170,7 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                                           SizedBox(width: 10),
                                           GestureDetector(
                                             onTap: () async{
-                                             await context.read<ShowCalendarProvider>().deleteWorkRecord(selectDay).then((value){
+                                             await context.read<ShowCalendarProvider>().deleteWorkRecord(selectDay,context).then((value){
                                                Navigator.pop(context);
                                                Navigator.pop(context);
                                              });
@@ -262,7 +262,7 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final showCalendarProvider = Provider.of<ShowCalendarProvider>(context, listen: false);
 
-      await showCalendarProvider.getFireStore(showCalendarProvider.focusDay);
+      await showCalendarProvider.getFireStore(showCalendarProvider.focusDay,context);
     });
   }
 }

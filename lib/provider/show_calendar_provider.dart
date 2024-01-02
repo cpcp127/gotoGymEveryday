@@ -1,10 +1,12 @@
 import 'dart:collection';
+import 'package:calendar_every/provider/home_provider.dart';
 import 'package:calendar_every/toast/show_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../model/event_model.dart';
 
@@ -37,7 +39,8 @@ class ShowCalendarProvider extends ChangeNotifier {
 
   get getEventsForDay => _getEventsForDay;
 
-  Future<void> getFireStore(DateTime date) async {
+  Future<void> getFireStore(DateTime date,BuildContext context) async {
+
     _events.clear();
     await FirebaseFirestore.instance
         .collection('cpcp127@naver.com')
@@ -70,8 +73,8 @@ class ShowCalendarProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changePage(DateTime date) {
-    getFireStore(date);
+  void changePage(DateTime date,BuildContext context) {
+    getFireStore(date,context);
     _focusDay = date;
   }
 
@@ -96,7 +99,7 @@ class ShowCalendarProvider extends ChangeNotifier {
     context.go('/writeToday');
   }
 
-  Future<void> deleteWorkRecord(DateTime date) async {
+  Future<void> deleteWorkRecord(DateTime date,BuildContext context) async {
     //개수에 따라서 사진 삭제후 firestore도 삭제
     _isLoading = true;
     notifyListeners();
@@ -121,7 +124,7 @@ class ShowCalendarProvider extends ChangeNotifier {
         .collection(DateFormat('yyyy년MM월').format(date))
         .doc(DateFormat('yyyy년MM월dd일').format(date))
         .delete().then((value) async {
-      await getFireStore(date);
+      await getFireStore(date,context);
 
     }).whenComplete((){
       _isLoading = false;

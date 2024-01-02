@@ -38,7 +38,7 @@ class _RegisterViewState extends State<RegisterView> {
                         horizontal: 16, vertical: 20),
                     child: GestureDetector(
                       onTap: () async {
-                        provider.stepNext();
+                        provider.stepNext(context);
                       },
                       child: Container(
                         height: 50,
@@ -50,38 +50,39 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                   );
                 } else {
-                  return Container(
-                    height: 50,
-                    width: double.infinity,
-                    color: Colors.white,
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
-                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            provider.stepPrevious();
-                          },
-                          child: Container(
-                            height: 50,
-                            width: 200,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: Colors.black,
+                        Flexible(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              provider.stepPrevious();
+                            },
+                            child: Container(
+                              height: 50,
+                              // width: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
                         SizedBox(width: 16),
-                        GestureDetector(
-                          onTap: () async {
-                            provider.stepNext();
-                          },
-                          child: Expanded(
+                        Flexible(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () async {
+                              provider.stepNext(context);
+                            },
                             child: Container(
                               height: 50,
-                              width: 200,
+                              // width: 200,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
-                                color: Colors.black,
+                                color: Colors.blue,
                               ),
                             ),
                           ),
