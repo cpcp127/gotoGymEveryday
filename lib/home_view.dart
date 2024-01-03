@@ -1,9 +1,12 @@
+import 'package:calendar_every/home_tab/account_view.dart';
 import 'package:calendar_every/home_tab/chart_view.dart';
 import 'package:calendar_every/home_tab/show_calendar_view.dart';
 import 'package:calendar_every/provider/home_provider.dart';
+import 'package:calendar_every/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -19,7 +22,7 @@ class _HomeViewState extends State<HomeView> {
       color: Colors.white,
       child: SafeArea(child: Consumer<HomeProvider>(
         builder: (context, provider, child) {
-          if(provider.autoLogin){
+          if (provider.autoLogin == true) {
             return Scaffold(
                 bottomNavigationBar: BottomNavigationBar(
                   backgroundColor: Colors.white,
@@ -40,101 +43,130 @@ class _HomeViewState extends State<HomeView> {
                   currentIndex: context.watch<HomeProvider>().pageIndex,
                 ),
                 body: provider.pageIndex == 0
-                    ? const ShowCalendarView()
+                    ? ShowCalendarView()
                     : provider.pageIndex == 1
-                    ? const ChartView()
-                    : Container()
-            );
-          }else{
+                        ? const ChartView()
+                        : provider.pageIndex == 2
+                            ? Container()
+                            : AccountView());
+          } else {
             return GestureDetector(
-              onTap: (){
+              onTap: () {
                 FocusManager.instance.primaryFocus?.unfocus();
               },
-              child: Scaffold(
-                body: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(),
-                    Text('로그인'),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextFormField(
-                        controller: provider.emailController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black, width: 1.0),
-                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black, width: 2.0),
-                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TextFormField(
-                        controller: provider.pwdController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black, width: 1.0),
-                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black, width: 2.0),
-                            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-
-                        children: [
-                          Expanded(child: SizedBox()),
-                          GestureDetector(
-                            onTap: (){
-                              context.push('/register');
-                            },
-                            child: Container(
-                              height: 44,
-                              color: Colors.white,
-                              child: Center(child: Text('회원가입')),
+              child: Stack(
+                children: [
+                  Scaffold(
+                    body: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(),
+                        Text('로그인'),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: TextFormField(
+                            controller: provider.emailController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.0)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.0)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 2.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.0)),
+                              ),
                             ),
-                          )
-                        ],
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: TextFormField(
+                            obscureText: provider.showPwd,
+                            controller: provider.pwdController,
+                            decoration: InputDecoration(
+                              suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    provider.showObscureText();
+                                  },
+                                  child: Icon(provider.showPwd == true
+                                      ? Icons.visibility
+                                      : Icons.visibility_off)),
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.0)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 1.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.0)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 2.0),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12.0)),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Expanded(child: SizedBox()),
+                              GestureDetector(
+                                onTap: () {
+                                  context.push('/register');
+                                },
+                                child: Container(
+                                  height: 44,
+                                  color: Colors.white,
+                                  child: Center(child: Text('회원가입')),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () {
+                            provider.loginFirebase();
+                          },
+                          child: Container(
+                            width: 200,
+                            height: 60,
+                            child: Center(child: Text('로그인')),
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: provider.loginLoading,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.6),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: (){
-                        provider.loginFirebase();
-                      },
-                      child: Container(
-                        width: 200,
-                        height: 60,
-                        child: Center(child: Text('로그인')),
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
-                ),
+                  )
+                ],
               ),
             );
           }
-
         },
       )),
     );
@@ -144,11 +176,9 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    (() async {
       final homeProvider = Provider.of<HomeProvider>(context, listen: false);
       await homeProvider.autoLoginCheck();
-      print(homeProvider.autoLogin);
-    });
-
+    })();
   }
 }

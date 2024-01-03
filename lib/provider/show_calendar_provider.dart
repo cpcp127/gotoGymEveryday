@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:calendar_every/provider/home_provider.dart';
 import 'package:calendar_every/toast/show_toast.dart';
+import 'package:calendar_every/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -40,10 +41,9 @@ class ShowCalendarProvider extends ChangeNotifier {
   get getEventsForDay => _getEventsForDay;
 
   Future<void> getFireStore(DateTime date,BuildContext context) async {
-
     _events.clear();
     await FirebaseFirestore.instance
-        .collection('cpcp127@naver.com')
+        .collection(UserService.instance.userModel.email)
         .doc('운동기록')
         .collection(DateFormat('yyyy년MM월').format(date))
         .get()
@@ -96,7 +96,7 @@ class ShowCalendarProvider extends ChangeNotifier {
     } else {
       context.go('/writeToday');
     }
-    context.go('/writeToday');
+
   }
 
   Future<void> deleteWorkRecord(DateTime date,BuildContext context) async {
@@ -104,7 +104,7 @@ class ShowCalendarProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     await FirebaseStorage.instance
-        .ref('cpcp127@naver.com ${DateFormat('yyyy년MM월dd일/').format(date)}')
+        .ref('${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일/').format(date)}')
         .listAll()
         .then((value) {
       List<String> pathList = [];
@@ -119,7 +119,7 @@ class ShowCalendarProvider extends ChangeNotifier {
       }
     });
     await FirebaseFirestore.instance
-        .collection('cpcp127@naver.com')
+        .collection(UserService.instance.userModel.email)
         .doc('운동기록')
         .collection(DateFormat('yyyy년MM월').format(date))
         .doc(DateFormat('yyyy년MM월dd일').format(date))

@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:calendar_every/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +37,7 @@ class ChartProvider extends ChangeNotifier {
   Future<void> getWorkDayOfMonth(DateTime dateTime) async{
     _events.clear();
     await FirebaseFirestore.instance
-        .collection('cpcp127@naver.com')
+        .collection(UserService.instance.userModel.email)
         .doc('운동기록')
         .collection(DateFormat('yyyy년MM월').format(dateTime))
         .get()
@@ -65,7 +66,7 @@ class ChartProvider extends ChangeNotifier {
   Future<void> getSixEventMonth(DateTime dateTime,LinkedHashMap<DateTime, List<Event>> eventMap) async{
     eventMap.clear();
     await FirebaseFirestore.instance
-        .collection('cpcp127@naver.com')
+        .collection(UserService.instance.userModel.email)
         .doc('운동기록')
         .collection(DateFormat('yyyy년MM월').format(dateTime))
         .get()

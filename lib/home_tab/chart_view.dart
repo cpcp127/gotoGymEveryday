@@ -3,6 +3,7 @@ import 'package:calendar_every/provider/show_calendar_provider.dart';
 import 'package:calendar_every/theme/agro_text_style.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
 class ChartView extends StatefulWidget {
@@ -167,7 +168,7 @@ class _ChartViewState extends State<ChartView> {
                                       5, provider.sixEvents.length.toDouble()),
                                 ],
                                 isCurved: true,
-                                barWidth: 8,
+                                barWidth: 1,
                                 color: Colors.blue,
                                 dotData: const FlDotData(
                                   show: true,
@@ -255,19 +256,19 @@ class _ChartViewState extends State<ChartView> {
     String text;
     switch (value.toInt()) {
       case 0:
-        text = '${(DateTime.now().month - 5)}월';
+        text = '${Jiffy.now().add(months: -5).month}월';
         break;
       case 1:
-        text = '${(DateTime.now().month - 4)}월';
+        text = '${Jiffy.now().add(months: -4).month}월';
         break;
       case 2:
-        text = '${(DateTime.now().month - 3)}월';
+        text = '${Jiffy.now().add(months: -3).month}월';
         break;
       case 3:
-        text = '${(DateTime.now().month - 2)}월';
+        text = '${Jiffy.now().add(months: -2).month}월';
         break;
       case 4:
-        text = '${(DateTime.now().month - 1)}월';
+        text = '${Jiffy.now().add(months: -1).month}월';
         break;
       case 5:
         text = '${(DateTime.now().month)}월';

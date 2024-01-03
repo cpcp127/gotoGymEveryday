@@ -1,4 +1,6 @@
+import 'package:calendar_every/model/user_model.dart';
 import 'package:calendar_every/provider/show_calendar_provider.dart';
+import 'package:calendar_every/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -49,6 +51,7 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
+
                     Consumer<ShowCalendarProvider>(builder: (context, provider, child) {
                       return TableCalendar(
                         locale: 'ko_KR',
@@ -261,8 +264,10 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       final showCalendarProvider = Provider.of<ShowCalendarProvider>(context, listen: false);
-
+      // final homeProvider = Provider.of<HomeProvider>(context,listen: false);
+      // print(homeProvider.userModel.email);
       await showCalendarProvider.getFireStore(showCalendarProvider.focusDay,context);
+
     });
   }
 }

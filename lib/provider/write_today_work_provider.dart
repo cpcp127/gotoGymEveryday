@@ -11,6 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../user_service.dart';
+
 class WriteTodayWorkProvider extends ChangeNotifier {
   final ImagePicker picker = ImagePicker();
   List<String> _workList = [];
@@ -50,7 +52,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
       for (int i = 0; i < imageList.length; i++) {
         await FirebaseStorage.instance
             .ref(
-                'cpcp127@naver.com ${DateFormat('yyyy년MM월dd일').format(date)}/cpcp127@naver.com ${DateFormat('yyyy년MM월dd일').format(date)} $i')
+                '${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일').format(date)}/${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일').format(date)} $i')
             .putFile(File(imageList[i].path))
             .then((val) async {
           imageUrlList.add(await val.ref.getDownloadURL());
@@ -58,7 +60,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
       }
       //storage에 사진 저장후 사진주소를 받아서 Firestore에 저장
       await FirebaseFirestore.instance
-          .collection('cpcp127@naver.com')
+          .collection(UserService.instance.userModel.email)
           .doc('운동기록')
           .collection(DateFormat('yyyy년MM월').format(date)).doc(DateFormat('yyyy년MM월dd일').format(date))
           .set({
