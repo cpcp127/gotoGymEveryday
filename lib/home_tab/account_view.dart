@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calendar_every/provider/account_provider.dart';
 import 'package:calendar_every/user_service.dart';
@@ -87,7 +85,9 @@ class _AccountViewState extends State<AccountView> {
                                             flex: 1,
                                             child: GestureDetector(
                                               onTap: () async {
-                                               await context.read<AccountProvider>().logout(context);
+                                                await context
+                                                    .read<AccountProvider>()
+                                                    .logout(context);
                                               },
                                               child: Container(
                                                 height: 50,

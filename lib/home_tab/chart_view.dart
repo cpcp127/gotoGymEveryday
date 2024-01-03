@@ -1,5 +1,4 @@
 import 'package:calendar_every/provider/chart_provider.dart';
-import 'package:calendar_every/provider/show_calendar_provider.dart';
 import 'package:calendar_every/theme/agro_text_style.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';

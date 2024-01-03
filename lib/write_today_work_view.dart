@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:calendar_every/provider/write_today_work_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -60,7 +59,7 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                provider.stepContinue(context,DateTime.now());
+                                provider.stepContinue(context, DateTime.now());
                               },
                               child: Container(
                                 child: const Center(child: Text('다음')),

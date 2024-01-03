@@ -34,66 +34,58 @@ class AgroTextStyle {
   );
 
   static final TextStyle titleMedium = TextStyle(
-    fontWeight: FontWeight.w500,
-    fontSize: 16,
-    height: 24 / 16,
-    color: Colors.black,
-    letterSpacing: -0.15
-  );
+      fontWeight: FontWeight.w500,
+      fontSize: 16,
+      height: 24 / 16,
+      color: Colors.black,
+      letterSpacing: -0.15);
 
   static final TextStyle titleSmall = TextStyle(
-    fontWeight: FontWeight.w300,
-    fontSize: 14,
-    height: 20 / 14,
-    color: Colors.black,
-    letterSpacing: -0.1
-  );
+      fontWeight: FontWeight.w300,
+      fontSize: 14,
+      height: 20 / 14,
+      color: Colors.black,
+      letterSpacing: -0.1);
 
   static final TextStyle labelLarge = TextStyle(
-    fontWeight: FontWeight.w700,
-    fontSize: 14,
-    height: 20 / 14,
-    color: Colors.black,
-    letterSpacing: -0.1
-  );
+      fontWeight: FontWeight.w700,
+      fontSize: 14,
+      height: 20 / 14,
+      color: Colors.black,
+      letterSpacing: -0.1);
 
   static final TextStyle labelMedium = TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 12,
       height: 16 / 12,
       color: Colors.black,
-      letterSpacing: -0.5
-  );
+      letterSpacing: -0.5);
 
   static final TextStyle labelSmall = TextStyle(
       fontWeight: FontWeight.w300,
       fontSize: 11,
       height: 16 / 11,
       color: Colors.black,
-      letterSpacing: -0.5
-  );
+      letterSpacing: -0.5);
 
   static final TextStyle bodyLarge = TextStyle(
       fontWeight: FontWeight.w700,
       fontSize: 16,
       height: 24 / 16,
       color: Colors.black,
-      letterSpacing: -0.5
-  );
+      letterSpacing: -0.5);
 
   static final TextStyle bodyMedium = TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 14,
       height: 20 / 14,
       color: Colors.black,
-      letterSpacing: -0.25
-  );
+      letterSpacing: -0.25);
 
   static final TextStyle bodySmall = TextStyle(
       fontWeight: FontWeight.w300,
       fontSize: 12,
       height: 16 / 12,
       color: Colors.black,
-      letterSpacing: -0.4
-  );
+      letterSpacing: -0.4);
 }

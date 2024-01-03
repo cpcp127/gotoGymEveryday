@@ -4,5 +4,5 @@ class Event {
   final String subtitle;
   final List<dynamic> photoList;
 
-  Event(this.date,this.title,this.subtitle,this.photoList );
+  Event(this.date, this.title, this.subtitle, this.photoList);
 }

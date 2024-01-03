@@ -82,25 +82,23 @@ class MyApp extends StatelessWidget {
       routerDelegate: _router.routerDelegate,
       title: 'Flutter Demo',
       theme: ThemeData(
-        splashColor: Colors.white,
-        splashFactory: NoSplash.splashFactory,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        scaffoldBackgroundColor: Colors.white,
-        fontFamily: 'Agro',
-        useMaterial3: true,
-        bottomSheetTheme: BottomSheetThemeData(
-          elevation: 0,
-          backgroundColor: Colors.white,
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          elevation: 1,
-          backgroundColor: Colors.white,
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.blue.withOpacity(0.3),
-            type: BottomNavigationBarType.fixed,
-          showUnselectedLabels: true
-        )
-      ),
+          splashColor: Colors.white,
+          splashFactory: NoSplash.splashFactory,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          scaffoldBackgroundColor: Colors.white,
+          fontFamily: 'Agro',
+          useMaterial3: true,
+          bottomSheetTheme: BottomSheetThemeData(
+            elevation: 0,
+            backgroundColor: Colors.white,
+          ),
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+              elevation: 1,
+              backgroundColor: Colors.white,
+              selectedItemColor: Colors.blue,
+              unselectedItemColor: Colors.blue.withOpacity(0.3),
+              type: BottomNavigationBarType.fixed,
+              showUnselectedLabels: true)),
     );
   }
 }

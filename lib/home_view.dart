@@ -2,11 +2,9 @@ import 'package:calendar_every/home_tab/account_view.dart';
 import 'package:calendar_every/home_tab/chart_view.dart';
 import 'package:calendar_every/home_tab/show_calendar_view.dart';
 import 'package:calendar_every/provider/home_provider.dart';
-import 'package:calendar_every/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

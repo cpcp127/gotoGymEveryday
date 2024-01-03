@@ -1,14 +1,10 @@
-import 'package:calendar_every/model/user_model.dart';
 import 'package:calendar_every/provider/show_calendar_provider.dart';
-import 'package:calendar_every/user_service.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../provider/home_provider.dart';
 import '../theme/agro_text_style.dart';
 
 class ShowCalendarView extends StatefulWidget {
@@ -19,7 +15,6 @@ class ShowCalendarView extends StatefulWidget {
 }
 
 class _ShowCalendarViewState extends State<ShowCalendarView> {
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -34,7 +29,9 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                     padding: const EdgeInsets.only(right: 8),
                     child: GestureDetector(
                       onTap: () async {
-                        context.read<ShowCalendarProvider>().gotoWriteToday(context);
+                        context
+                            .read<ShowCalendarProvider>()
+                            .gotoWriteToday(context);
                       },
                       child: const SizedBox(
                           width: 44,
@@ -51,8 +48,8 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-
-                    Consumer<ShowCalendarProvider>(builder: (context, provider, child) {
+                    Consumer<ShowCalendarProvider>(
+                        builder: (context, provider, child) {
                       return TableCalendar(
                         locale: 'ko_KR',
                         focusedDay: provider.focusDay,
@@ -69,7 +66,7 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                           return isSameDay(provider.selectDay, day);
                         },
                         onPageChanged: (DateTime date) async {
-                          provider.changePage(date,context);
+                          provider.changePage(date, context);
                         },
                         onDaySelected: (selectDay, focusDay) {
                           provider.selectingDay(selectDay, focusDay);
@@ -132,7 +129,6 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                     Expanded(child: SizedBox()),
                     GestureDetector(
                       onTap: () {
-
                         showDialog(
                             context: context,
                             builder: (context) {
@@ -172,11 +168,15 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                                           ),
                                           SizedBox(width: 10),
                                           GestureDetector(
-                                            onTap: () async{
-                                             await context.read<ShowCalendarProvider>().deleteWorkRecord(selectDay,context).then((value){
-                                               Navigator.pop(context);
-                                               Navigator.pop(context);
-                                             });
+                                            onTap: () async {
+                                              await context
+                                                  .read<ShowCalendarProvider>()
+                                                  .deleteWorkRecord(
+                                                      selectDay, context)
+                                                  .then((value) {
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                              });
                                             },
                                             child: Container(
                                               width: 50,
@@ -263,11 +263,12 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      final showCalendarProvider = Provider.of<ShowCalendarProvider>(context, listen: false);
+      final showCalendarProvider =
+          Provider.of<ShowCalendarProvider>(context, listen: false);
       // final homeProvider = Provider.of<HomeProvider>(context,listen: false);
       // print(homeProvider.userModel.email);
-      await showCalendarProvider.getFireStore(showCalendarProvider.focusDay,context);
-
+      await showCalendarProvider.getFireStore(
+          showCalendarProvider.focusDay, context);
     });
   }
 }

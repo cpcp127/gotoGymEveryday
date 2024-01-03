@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:calendar_every/home_tab/show_calendar_view.dart';
-import 'package:calendar_every/provider/home_provider.dart';
 import 'package:calendar_every/provider/show_calendar_provider.dart';
 import 'package:calendar_every/toast/show_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,7 +35,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  Future<void> stepContinue(context,DateTime date) async {
+  Future<void> stepContinue(context, DateTime date) async {
     if (_pageIndex == 0) {
       if (_workList.isEmpty) {
         showToast('1개 이상 선택해 주세요');
@@ -62,7 +60,8 @@ class WriteTodayWorkProvider extends ChangeNotifier {
       await FirebaseFirestore.instance
           .collection(UserService.instance.userModel.email)
           .doc('운동기록')
-          .collection(DateFormat('yyyy년MM월').format(date)).doc(DateFormat('yyyy년MM월dd일').format(date))
+          .collection(DateFormat('yyyy년MM월').format(date))
+          .doc(DateFormat('yyyy년MM월dd일').format(date))
           .set({
         'date': date.toLocal(),
         'datetime': (DateFormat('yyyy년MM월dd일').format(date)),
@@ -71,7 +70,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
         'photoList': imageUrlList
       }).then((value) async {
         await Provider.of<ShowCalendarProvider>(context, listen: false)
-            .getFireStore(date,context);
+            .getFireStore(date, context);
         Navigator.of(context).pop();
       });
     }

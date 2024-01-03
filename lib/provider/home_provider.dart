@@ -1,4 +1,3 @@
-import 'package:calendar_every/model/user_model.dart';
 import 'package:calendar_every/toast/show_toast.dart';
 import 'package:calendar_every/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,36 +44,37 @@ class HomeProvider extends ChangeNotifier {
       _autoLogin = false;
       notifyListeners();
     } else {
-     await UserService.instance.initUser();
+      await UserService.instance.initUser();
       _autoLogin = true;
       notifyListeners();
     }
-   // notifyListeners();
+    // notifyListeners();
   }
 
   Future<void> loginFirebase() async {
     FocusManager.instance.primaryFocus?.unfocus();
     _loginLoading = true;
     notifyListeners();
-   await FirebaseAuth.instance
+    await FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: _emailController.text.trim(),
             password: _pwdController.text.trim())
-        .then((value) async{
-     await FirebaseFirestore.instance
+        .then((value) async {
+      await FirebaseFirestore.instance
           .collection(emailController.text.trim())
           .doc('info')
           .get()
           .then((value) async {
-       await UserService.instance.initUser();
+        await UserService.instance.initUser();
       });
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-     prefs.setStringList('auto_info', [_emailController.text.trim(),_pwdController.text.trim()]);
-     await UserService.instance.initUser();
-     showToast('${UserService.instance.userModel.nickname}님 오늘도 오운완하세요!');
-     _autoLogin = true;
-     _loginLoading = false;
-     notifyListeners();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setStringList('auto_info',
+          [_emailController.text.trim(), _pwdController.text.trim()]);
+      await UserService.instance.initUser();
+      showToast('${UserService.instance.userModel.nickname}님 오늘도 오운완하세요!');
+      _autoLogin = true;
+      _loginLoading = false;
+      notifyListeners();
     }).catchError((e) {
       showToast('로그인 실패');
       _loginLoading = false;
@@ -83,12 +83,11 @@ class HomeProvider extends ChangeNotifier {
     //notifyListeners();
   }
 
-  void showObscureText(){
-    if(_showPwd==false){
-      _showPwd=true;
-    }
-    else{
-      _showPwd=false;
+  void showObscureText() {
+    if (_showPwd == false) {
+      _showPwd = true;
+    } else {
+      _showPwd = false;
     }
     notifyListeners();
   }

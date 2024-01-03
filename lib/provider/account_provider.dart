@@ -16,7 +16,6 @@ class AccountProvider extends ChangeNotifier {
   Future<void> logout(BuildContext context) async {
     context.pop();
     try {
-
       HomeProvider homeProvider =
           Provider.of<HomeProvider>(context, listen: false);
       _isLoading = true;
@@ -29,7 +28,6 @@ class AccountProvider extends ChangeNotifier {
       await homeProvider.autoLoginCheck();
       homeProvider.resetProvider();
       notifyListeners();
-
     } catch (e) {
       showToast('로그아웃 실패');
       _isLoading = false;

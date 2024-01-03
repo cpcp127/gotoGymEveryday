@@ -29,12 +29,12 @@ class ChartProvider extends ChangeNotifier {
   LinkedHashMap<DateTime, List<Event>> get fiveEvents => _fiveEvents;
   LinkedHashMap<DateTime, List<Event>> get sixEvents => _sixEvents;
 
-  Future<void> getLastDayOfMonth(DateTime dateTime) async{
+  Future<void> getLastDayOfMonth(DateTime dateTime) async {
     _lastDay = DateTime(dateTime.year, dateTime.month + 1, 0).day;
     notifyListeners();
   }
 
-  Future<void> getWorkDayOfMonth(DateTime dateTime) async{
+  Future<void> getWorkDayOfMonth(DateTime dateTime) async {
     _events.clear();
     await FirebaseFirestore.instance
         .collection(UserService.instance.userModel.email)
@@ -63,7 +63,8 @@ class ChartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getSixEventMonth(DateTime dateTime,LinkedHashMap<DateTime, List<Event>> eventMap) async{
+  Future<void> getSixEventMonth(
+      DateTime dateTime, LinkedHashMap<DateTime, List<Event>> eventMap) async {
     eventMap.clear();
     await FirebaseFirestore.instance
         .collection(UserService.instance.userModel.email)
