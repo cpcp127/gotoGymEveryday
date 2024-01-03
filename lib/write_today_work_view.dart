@@ -46,11 +46,11 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                                   provider.stepPrevious();
                                 },
                                 child: Container(
-                                  child: const Center(child: Text('이전')),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(12),
                                     color: Colors.cyan,
                                   ),
+                                  child: const Center(child: Text('이전')),
                                 ),
                               ),
                             ),
@@ -62,11 +62,11 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                                 provider.stepContinue(context, DateTime.now());
                               },
                               child: Container(
-                                child: const Center(child: Text('다음')),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   color: Colors.cyan,
                                 ),
+                                child: const Center(child: Text('다음')),
                               ),
                             ),
                           ),
@@ -96,9 +96,9 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                                             width: 220,
                                             height: 220,
                                             color: Colors.red,
-                                            child: Icon(Icons.add),
+                                            child: const Icon(Icons.add),
                                           )
-                                        : Container(
+                                        : SizedBox(
                                             width: 220,
                                             height: 220,
                                             child: PageView.builder(
@@ -127,7 +127,7 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                                                 }),
                                           ),
                                   ),
-                                  SizedBox(height: 16),
+                                  const SizedBox(height: 16),
                                   Container(
                                     width: 220,
                                     alignment: Alignment.center,

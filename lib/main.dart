@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           fontFamily: 'Agro',
           useMaterial3: true,
-          bottomSheetTheme: BottomSheetThemeData(
+          bottomSheetTheme: const BottomSheetThemeData(
             elevation: 0,
             backgroundColor: Colors.white,
           ),

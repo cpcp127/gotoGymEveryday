@@ -24,7 +24,7 @@ class _RegisterViewState extends State<RegisterView> {
         child: SafeArea(
           child: Scaffold(
             appBar: AppBar(
-              title: Text('회원가입'),
+              title: const Text('회원가입'),
             ),
             resizeToAvoidBottomInset: true,
             bottomSheet: SafeArea(child: Consumer<RegisterProvider>(
@@ -67,7 +67,7 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Flexible(
                           flex: 1,
                           child: GestureDetector(
@@ -95,8 +95,8 @@ class _RegisterViewState extends State<RegisterView> {
                 if (provider.pageIndex == 1) {
                   return Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16),
                         child: Row(
                           children: [
                             Text('이메일'),
@@ -149,9 +149,9 @@ class _RegisterViewState extends State<RegisterView> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                      const SizedBox(height: 16),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16),
                         child: Row(
                           children: [
                             Text('비밀번호'),
@@ -163,7 +163,7 @@ class _RegisterViewState extends State<RegisterView> {
                         child: Form(
                           key: context.read<RegisterProvider>().pwdFormKey,
                           child: TextFormField(
-                            scrollPadding: EdgeInsets.only(bottom: 150),
+                            scrollPadding: const EdgeInsets.only(bottom: 150),
                             focusNode: context.read<RegisterProvider>().pwdNode,
                             controller:
                                 context.read<RegisterProvider>().pwdController,
@@ -204,9 +204,9 @@ class _RegisterViewState extends State<RegisterView> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                      const SizedBox(height: 16),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16),
                         child: Row(
                           children: [
                             Text('비밀번호 확인'),
@@ -218,7 +218,7 @@ class _RegisterViewState extends State<RegisterView> {
                         child: Form(
                           key: context.read<RegisterProvider>().pwdCheckFormKey,
                           child: TextFormField(
-                            scrollPadding: EdgeInsets.only(bottom: 150),
+                            scrollPadding: const EdgeInsets.only(bottom: 150),
                             focusNode:
                                 context.read<RegisterProvider>().pwdCheckNode,
                             controller: context
@@ -261,14 +261,14 @@ class _RegisterViewState extends State<RegisterView> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 100),
+                      const SizedBox(height: 100),
                     ],
                   );
                 } else {
                   return Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16),
                         child: Row(
                           children: [
                             Text('닉네임'),
@@ -322,9 +322,9 @@ class _RegisterViewState extends State<RegisterView> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16, bottom: 16),
+                      const SizedBox(height: 16),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16, bottom: 16),
                         child: Row(
                           children: [
                             Text('프로필 사진'),

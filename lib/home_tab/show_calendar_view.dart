@@ -123,10 +123,10 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(width: double.infinity),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   children: [
-                    Expanded(child: SizedBox()),
+                    const Expanded(child: SizedBox()),
                     GestureDetector(
                       onTap: () {
                         showDialog(
@@ -146,14 +146,14 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('삭제'),
-                                      SizedBox(height: 16),
+                                      const Text('삭제'),
+                                      const SizedBox(height: 16),
                                       Text(
                                           '${DateFormat('yyyy년 MM월 dd일').format(selectDay)}의 기록을 삭제하시겠어요?'),
-                                      SizedBox(height: 16),
+                                      const SizedBox(height: 16),
                                       Row(
                                         children: [
-                                          Expanded(child: SizedBox()),
+                                          const Expanded(child: SizedBox()),
                                           GestureDetector(
                                             onTap: () {
                                               Navigator.pop(context);
@@ -163,10 +163,11 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                                               width: 50,
                                               height: 44,
                                               color: Colors.red,
-                                              child: Center(child: Text('취소')),
+                                              child: const Center(
+                                                  child: Text('취소')),
                                             ),
                                           ),
-                                          SizedBox(width: 10),
+                                          const SizedBox(width: 10),
                                           GestureDetector(
                                             onTap: () async {
                                               await context
@@ -182,7 +183,8 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                                               width: 50,
                                               height: 44,
                                               color: Colors.red,
-                                              child: Center(child: Text('삭제')),
+                                              child: const Center(
+                                                  child: Text('삭제')),
                                             ),
                                           )
                                         ],
@@ -193,23 +195,23 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                               );
                             });
                       },
-                      child: Container(
+                      child: const SizedBox(
                         width: 44,
                         height: 44,
                         child: Icon(Icons.delete),
                       ),
                     ),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                   ],
                 ),
                 const SizedBox(height: 30),
                 Text(DateFormat('yyyy년 MM월 dd일').format(selectDay),
                     style: AgroTextStyle.headlineLarge),
                 const SizedBox(height: 30),
-                Text('${provider.events[selectDay]!.single.title}'),
+                Text(provider.events[selectDay]!.single.title),
                 provider.events[selectDay]!.single.photoList.isEmpty
                     ? Container()
-                    : Container(
+                    : SizedBox(
                         width: 220,
                         height: 220,
                         child: PageView.builder(

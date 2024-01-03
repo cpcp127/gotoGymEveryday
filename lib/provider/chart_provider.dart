@@ -43,7 +43,6 @@ class ChartProvider extends ChangeNotifier {
         .get()
         .then((value) {
       for (int i = 0; i < value.docs.length; i++) {
-        print(value.docs[i].data()['date'].toDate());
         _events.addAll({
           DateTime.utc(
               value.docs[i].data()['date'].toDate().year,
@@ -73,7 +72,6 @@ class ChartProvider extends ChangeNotifier {
         .get()
         .then((value) {
       for (int i = 0; i < value.docs.length; i++) {
-        print(value.docs[i].data()['date'].toDate());
         eventMap.addAll({
           DateTime.utc(
               value.docs[i].data()['date'].toDate().year,

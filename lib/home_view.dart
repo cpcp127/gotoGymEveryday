@@ -41,12 +41,12 @@ class _HomeViewState extends State<HomeView> {
                   currentIndex: context.watch<HomeProvider>().pageIndex,
                 ),
                 body: provider.pageIndex == 0
-                    ? ShowCalendarView()
+                    ? const ShowCalendarView()
                     : provider.pageIndex == 1
                         ? const ChartView()
                         : provider.pageIndex == 2
                             ? Container()
-                            : AccountView());
+                            : const AccountView());
           } else {
             return GestureDetector(
               onTap: () {
@@ -59,8 +59,8 @@ class _HomeViewState extends State<HomeView> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(),
-                        Text('로그인'),
+                        const Row(),
+                        const Text('로그인'),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: TextFormField(
@@ -85,7 +85,7 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: TextFormField(
@@ -99,17 +99,17 @@ class _HomeViewState extends State<HomeView> {
                                   child: Icon(provider.showPwd == true
                                       ? Icons.visibility
                                       : Icons.visibility_off)),
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(12.0)),
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.black, width: 1.0),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(12.0)),
                               ),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: const OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.black, width: 2.0),
                                 borderRadius:
@@ -123,7 +123,7 @@ class _HomeViewState extends State<HomeView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Expanded(child: SizedBox()),
+                              const Expanded(child: SizedBox()),
                               GestureDetector(
                                 onTap: () {
                                   context.push('/register');
@@ -131,13 +131,13 @@ class _HomeViewState extends State<HomeView> {
                                 child: Container(
                                   height: 44,
                                   color: Colors.white,
-                                  child: Center(child: Text('회원가입')),
+                                  child: const Center(child: Text('회원가입')),
                                 ),
                               )
                             ],
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         GestureDetector(
                           onTap: () {
                             provider.loginFirebase();
@@ -145,8 +145,8 @@ class _HomeViewState extends State<HomeView> {
                           child: Container(
                             width: 200,
                             height: 60,
-                            child: Center(child: Text('로그인')),
                             color: Colors.red,
+                            child: const Center(child: Text('로그인')),
                           ),
                         ),
                       ],

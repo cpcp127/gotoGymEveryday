@@ -12,21 +12,21 @@ import '../toast/show_toast.dart';
 class RegisterProvider extends ChangeNotifier {
   final ImagePicker picker = ImagePicker();
   int _pageIndex = 0;
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _pwdController = TextEditingController();
-  TextEditingController _pwdCheckController = TextEditingController();
-  TextEditingController _nickController = TextEditingController();
-  List<XFile> _imageList = [];
-  FocusNode _emailNode = FocusNode();
-  FocusNode _pwdNode = FocusNode();
-  FocusNode _pwdCheckNode = FocusNode();
-  FocusNode _nickNode = FocusNode();
-  GlobalKey<FormState> _emailFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> _pwdFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> _pwdCheckFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> _nickFormKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _pwdController = TextEditingController();
+  final TextEditingController _pwdCheckController = TextEditingController();
+  final TextEditingController _nickController = TextEditingController();
+  final List<XFile> _imageList = [];
+  final FocusNode _emailNode = FocusNode();
+  final FocusNode _pwdNode = FocusNode();
+  final FocusNode _pwdCheckNode = FocusNode();
+  final FocusNode _nickNode = FocusNode();
+  final GlobalKey<FormState> _emailFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _pwdFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _pwdCheckFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _nickFormKey = GlobalKey<FormState>();
   bool _isEmailExists = false;
-  bool _isKeyboard = false;
+  final bool _isKeyboard = false;
 
   int get pageIndex => _pageIndex;
 

@@ -21,7 +21,7 @@ class _ChartViewState extends State<ChartView> {
           children: [
             const SizedBox(height: 20),
             Text(
-              DateTime.now().month.toString() + '월 운동',
+              '${DateTime.now().month}월 운동',
               style: AgroTextStyle.headlineLarge,
             ),
             const SizedBox(height: 10),
@@ -133,7 +133,7 @@ class _ChartViewState extends State<ChartView> {
               ),
             ),
             const SizedBox(height: 20),
-            Text(
+            const Text(
               '지난 6개월 운동량',
               style: AgroTextStyle.headlineLarge,
             ),

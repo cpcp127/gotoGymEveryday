@@ -11,8 +11,8 @@ class HomeProvider extends ChangeNotifier {
   bool _autoLogin = false;
   bool _loginLoading = false;
   bool _showPwd = true;
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _pwdController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _pwdController = TextEditingController();
 
   TextEditingController get emailController => _emailController;
 

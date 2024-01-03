@@ -21,7 +21,7 @@ class ShowCalendarProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   DateTime _focusDay = DateTime.now();
   DateTime _selectDay = DateTime.now();
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
 
   DateTime get focusDay => _focusDay;
 

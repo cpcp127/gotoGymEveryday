@@ -13,12 +13,12 @@ import '../user_service.dart';
 
 class WriteTodayWorkProvider extends ChangeNotifier {
   final ImagePicker picker = ImagePicker();
-  List<String> _workList = [];
+  final List<String> _workList = [];
   List<String> _imageUrlList = [];
   int _pageIndex = 0;
-  TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
   List<XFile> _imageList = [];
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   bool _isLoading = false;
 
   List<String> get workList => _workList;
