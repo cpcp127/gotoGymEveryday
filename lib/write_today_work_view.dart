@@ -25,6 +25,7 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
             color: Colors.white,
             child: SafeArea(
               child: Scaffold(
+
                 bottomSheet: Consumer<WriteTodayWorkProvider>(
                     builder: (context, provider, child) {
                   return Container(
@@ -76,78 +77,81 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                     ),
                   );
                 }),
-                body: Consumer<WriteTodayWorkProvider>(
-                  builder: (context, provider, child) {
-                    return provider.pageIndex == 0
-                        ? stepOne(provider)
-                        : provider.pageIndex == 1
-                            ? stepTwo(provider)
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Row(),
-                                  GestureDetector(
-                                    onTap: () async {
-                                      await provider.selectMultiImage();
-                                    },
-                                    child: provider.imageList.isEmpty
-                                        ? Container(
-                                            width: 220,
-                                            height: 220,
-                                            color: Colors.red,
-                                            child: const Icon(Icons.add),
-                                          )
-                                        : SizedBox(
-                                            width: 220,
-                                            height: 220,
-                                            child: PageView.builder(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                controller:
-                                                    provider.pageController,
-                                                itemCount:
-                                                    provider.imageList.length,
-                                                itemBuilder: (context, index) {
-                                                  return Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      image: DecorationImage(
-                                                          image: FileImage(
-                                                            File(provider
-                                                                .imageList[
-                                                                    index]
-                                                                .path),
-                                                          ),
-                                                          fit: BoxFit.cover),
-                                                    ),
-                                                  );
-                                                }),
-                                          ),
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Container(
-                                    width: 220,
-                                    alignment: Alignment.center,
-                                    child: SmoothPageIndicator(
-                                        controller: provider.pageController,
-                                        count: provider.imageList.length,
-                                        effect: const ScrollingDotsEffect(
-                                          activeDotColor: Colors.indigoAccent,
-                                          activeStrokeWidth: 10,
-                                          activeDotScale: 1.7,
-                                          maxVisibleDots: 5,
-                                          radius: 16,
-                                          spacing: 10,
-                                          dotHeight: 16,
-                                          dotWidth: 16,
-                                        )),
-                                  )
-                                ],
-                              );
-                  },
+                body: Padding(
+                  padding: const EdgeInsets.only(bottom: 80),
+                  child: Consumer<WriteTodayWorkProvider>(
+                    builder: (context, provider, child) {
+                      return provider.pageIndex == 0
+                          ? stepOne(provider)
+                          : provider.pageIndex == 1
+                              ? stepTwo(provider)
+                              : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Row(),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        await provider.selectMultiImage();
+                                      },
+                                      child: provider.imageList.isEmpty
+                                          ? Container(
+                                              width: 220,
+                                              height: 220,
+                                              color: Colors.red,
+                                              child: const Icon(Icons.add),
+                                            )
+                                          : SizedBox(
+                                              width: 220,
+                                              height: 220,
+                                              child: PageView.builder(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  controller:
+                                                      provider.pageController,
+                                                  itemCount:
+                                                      provider.imageList.length,
+                                                  itemBuilder: (context, index) {
+                                                    return Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                12),
+                                                        image: DecorationImage(
+                                                            image: FileImage(
+                                                              File(provider
+                                                                  .imageList[
+                                                                      index]
+                                                                  .path),
+                                                            ),
+                                                            fit: BoxFit.cover),
+                                                      ),
+                                                    );
+                                                  }),
+                                            ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Container(
+                                      width: 220,
+                                      alignment: Alignment.center,
+                                      child: SmoothPageIndicator(
+                                          controller: provider.pageController,
+                                          count: provider.imageList.length,
+                                          effect: const ScrollingDotsEffect(
+                                            activeDotColor: Colors.indigoAccent,
+                                            activeStrokeWidth: 10,
+                                            activeDotScale: 1.7,
+                                            maxVisibleDots: 5,
+                                            radius: 16,
+                                            spacing: 10,
+                                            dotHeight: 16,
+                                            dotWidth: 16,
+                                          )),
+                                    )
+                                  ],
+                                );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -170,32 +174,100 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
     );
   }
 
-  Column stepTwo(WriteTodayWorkProvider provider) {
-    return Column(
-      children: [
-        const SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: TextField(
-            controller: provider.textEditingController,
-            maxLines: 10,
-            decoration: const InputDecoration(
-              hintText: '운동에 대해 간단히 설명해 주세요',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12.0)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 1.0),
-                borderRadius: BorderRadius.all(Radius.circular(12.0)),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+  Widget stepTwo(WriteTodayWorkProvider provider) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 50),
+          GestureDetector(
+            onTap: () async {
+              await provider.selectMultiImage();
+            },
+            child: provider.imageList.isEmpty
+                ? Container(
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey,width: 2)
+                    ),
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Icon(Icons.photo_camera,size: 25,),
+                        SizedBox(height: 5),
+                        Text('8장 이하로 올려주세요')
+                      ],
+                    ),
+                  )
+                : SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: PageView.builder(
+                        scrollDirection: Axis.horizontal,
+                        controller: provider.pageController,
+                        itemCount: provider.imageList.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              image: DecorationImage(
+                                  image: FileImage(
+                                    File(provider.imageList[index].path),
+                                  ),
+                                  fit: BoxFit.cover),
+                            ),
+                          );
+                        }),
+                  ),
+          ),
+          const SizedBox(height: 16),
+          Container(
+            width: 220,
+            alignment: Alignment.center,
+            child: SmoothPageIndicator(
+                controller: provider.pageController,
+                count: provider.imageList.length,
+                effect: const ScrollingDotsEffect(
+                  activeDotColor: Colors.indigoAccent,
+                  activeStrokeWidth: 10,
+                  activeDotScale: 1.7,
+                  maxVisibleDots: 5,
+                  radius: 16,
+                  spacing: 10,
+                  dotHeight: 16,
+                  dotWidth: 16,
+                )),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+              controller: provider.textEditingController,
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
+              textInputAction: TextInputAction.newline,
+              decoration: const InputDecoration(
+                hintText: '운동에 대해 간단히 설명해 주세요',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 1.0),
+                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2.0),
+                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                ),
               ),
             ),
           ),
-        )
-      ],
+
+        ],
+      ),
     );
   }
 

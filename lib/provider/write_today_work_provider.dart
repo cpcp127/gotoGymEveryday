@@ -94,8 +94,8 @@ class WriteTodayWorkProvider extends ChangeNotifier {
 
   Future<void> selectMultiImage() async {
     await picker.pickMultiImage(maxHeight: 1024, maxWidth: 1024).then((value) {
-      if (imageList.length + (value.length) >= 5) {
-        showToast('5장 이하로 선택해주세요');
+      if (imageList.length + (value.length) >= 8) {
+        showToast('8장 이하로 선택해주세요');
       } else {
         for (int i = 0; i < value.length; i++) {
           _imageList.add(value[i]);
