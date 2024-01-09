@@ -25,7 +25,6 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
             color: Colors.white,
             child: SafeArea(
               child: Scaffold(
-
                 bottomSheet: Consumer<WriteTodayWorkProvider>(
                     builder: (context, provider, child) {
                   return Container(
@@ -67,7 +66,9 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                                   borderRadius: BorderRadius.circular(12),
                                   color: Colors.cyan,
                                 ),
-                                child: const Center(child: Text('다음')),
+                                child: Center(
+                                    child: Text(
+                                        provider.pageIndex == 0 ? '다음' : '완료')),
                               ),
                             ),
                           ),
@@ -111,12 +112,13 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                                                       provider.pageController,
                                                   itemCount:
                                                       provider.imageList.length,
-                                                  itemBuilder: (context, index) {
+                                                  itemBuilder:
+                                                      (context, index) {
                                                     return Container(
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                12),
+                                                            BorderRadius
+                                                                .circular(12),
                                                         image: DecorationImage(
                                                             image: FileImage(
                                                               File(provider
@@ -190,14 +192,16 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                     width: 150,
                     height: 150,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.grey,width: 2)
-                    ),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.grey, width: 2)),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Icon(Icons.photo_camera,size: 25,),
+                        Icon(
+                          Icons.photo_camera,
+                          size: 25,
+                        ),
                         SizedBox(height: 5),
                         Text('8장 이하로 올려주세요')
                       ],
@@ -265,7 +269,33 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
               ),
             ),
           ),
+          const SizedBox(height: 16),
+          const Row(
+            children: [
+              Expanded(child: SizedBox()),
+              Text('게시글 자동 업로드'),
+              SizedBox(width: 16),
+            ],
+          ),
+          Row(
+            children: [
+              const Expanded(child: SizedBox()),
+              Switch(
+                  value: provider.uploadArticle,
+                  trackOutlineColor: MaterialStateProperty.resolveWith(
+                      (final Set<MaterialState> states) {
+                    if (states.contains(MaterialState.selected)) {
+                      return null;
+                    }
 
+                    return Colors.transparent;
+                  }),
+                  onChanged: (bool on) {
+                    provider.tapUploadArticleBtn();
+                  }),
+              const SizedBox(width: 16),
+            ],
+          ),
         ],
       ),
     );
