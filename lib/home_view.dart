@@ -1,4 +1,5 @@
 import 'package:calendar_every/home_tab/account_view.dart';
+import 'package:calendar_every/home_tab/article_view.dart';
 import 'package:calendar_every/home_tab/chart_view.dart';
 import 'package:calendar_every/home_tab/show_calendar_view.dart';
 import 'package:calendar_every/provider/home_provider.dart';
@@ -45,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
                     : provider.pageIndex == 1
                         ? const ChartView()
                         : provider.pageIndex == 2
-                            ? Container()
+                            ? ArticleView()
                             : const AccountView());
           } else {
             return GestureDetector(

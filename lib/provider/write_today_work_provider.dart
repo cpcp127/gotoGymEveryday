@@ -79,8 +79,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
           if (_uploadArticle == true) {
             await FirebaseFirestore.instance
                 .collection('article')
-                .doc('health_article')
-                .set({
+                .add({
               'upload_date': date.toLocal(),
               'title': _workList,
               'subtitle': textEditingController.text,
