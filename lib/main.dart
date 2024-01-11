@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
           splashFactory: NoSplash.splashFactory,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           scaffoldBackgroundColor: Colors.white,
-          fontFamily: 'Agro',
+          //fontFamily: 'Agro',
           useMaterial3: true,
           bottomSheetTheme: const BottomSheetThemeData(
             elevation: 0,

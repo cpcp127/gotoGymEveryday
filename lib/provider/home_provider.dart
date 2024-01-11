@@ -76,6 +76,7 @@ class HomeProvider extends ChangeNotifier {
       _loginLoading = false;
       notifyListeners();
     }).catchError((e) {
+      print(e);
       showToast('로그인 실패');
       _loginLoading = false;
       notifyListeners();

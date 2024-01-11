@@ -25,7 +25,7 @@ class _HomeViewState extends State<HomeView> {
             return Scaffold(
                 bottomNavigationBar: BottomNavigationBar(
                   backgroundColor: Colors.white,
-                  elevation: 1,
+                  elevation: 0,
                   items: const [
                     BottomNavigationBarItem(
                         icon: Icon(Icons.calendar_month), label: '일지'),
@@ -65,6 +65,7 @@ class _HomeViewState extends State<HomeView> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: TextFormField(
+
                             controller: provider.emailController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(
