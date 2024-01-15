@@ -183,14 +183,41 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 50),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  provider.tapHorizontalBtn();
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  color: Colors.red,
+                  child: Text('16:9'),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  provider.tapVerticalBtn();
+                },
+                child: Container(
+                    width: 50,
+                    height: 50,
+                    color: Colors.black,
+                    child: Text('4:5')),
+              ),
+            ],
+          ),
           GestureDetector(
             onTap: () async {
               await provider.selectMultiImage();
             },
             child: provider.imageList.isEmpty
                 ? Container(
-                    width: 150,
-                    height: 150,
+                    width: 360,
+                    height: 450,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: Colors.grey, width: 2)),
@@ -208,8 +235,10 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                     ),
                   )
                 : SizedBox(
-                    width: 150,
-                    height: 150,
+                    width: 360,
+                    height: provider.photoRatio == '4:5'
+                        ? (MediaQuery.of(context).size.width) / 4 * 5
+                        : (MediaQuery.of(context).size.width) / 16 * 9,
                     child: PageView.builder(
                         scrollDirection: Axis.horizontal,
                         controller: provider.pageController,
@@ -255,17 +284,6 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
               textInputAction: TextInputAction.newline,
               decoration: const InputDecoration(
                 hintText: '운동에 대해 간단히 설명해 주세요',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black, width: 2.0),
-                  borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                ),
               ),
             ),
           ),

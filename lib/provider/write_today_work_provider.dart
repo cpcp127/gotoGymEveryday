@@ -21,6 +21,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
   final PageController _pageController = PageController();
   bool _isLoading = false;
   bool _uploadArticle = false;
+  String _photoRatio = '4:5';
 
   List<String> get workList => _workList;
 
@@ -37,6 +38,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   bool get uploadArticle => _uploadArticle;
+  String get photoRatio => _photoRatio;
 
   Future<void> stepContinue(context, DateTime date) async {
     if (_pageIndex == 0) {
@@ -77,9 +79,11 @@ class WriteTodayWorkProvider extends ChangeNotifier {
           'photoList': imageUrlList,
         }).then((value) async {
           if (_uploadArticle == true) {
-            await FirebaseFirestore.instance
-                .collection('article')
-                .add({
+            await FirebaseFirestore.instance.collection('article').add({
+              'upload_user': {
+                'id': UserService.instance.userModel.email.trim(),
+                'nickname': UserService.instance.userModel.nickname
+              },
               'upload_date': date.toLocal(),
               'title': _workList,
               'subtitle': textEditingController.text,
@@ -144,5 +148,13 @@ class WriteTodayWorkProvider extends ChangeNotifier {
       _uploadArticle = false;
       notifyListeners();
     }
+  }
+  void tapHorizontalBtn(){
+    _photoRatio='16:9';
+    notifyListeners();
+  }
+  void tapVerticalBtn(){
+    _photoRatio='4:5';
+    notifyListeners();
   }
 }

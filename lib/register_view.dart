@@ -114,24 +114,6 @@ class _RegisterViewState extends State<RegisterView> {
                                 .read<RegisterProvider>()
                                 .emailController,
                             autovalidateMode: AutovalidateMode.disabled,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 2.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                            ),
                             validator: (str) {
                               if (str!.isEmpty) {
                                 return '사용하실 이메일을 입력해 주세요';
@@ -167,24 +149,7 @@ class _RegisterViewState extends State<RegisterView> {
                             focusNode: context.read<RegisterProvider>().pwdNode,
                             controller:
                                 context.read<RegisterProvider>().pwdController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 2.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                            ),
+
                             validator: (str) {
                               if (str!.isEmpty) {
                                 return '사용하실 비밀번호를 입력해 주세요';
@@ -224,24 +189,6 @@ class _RegisterViewState extends State<RegisterView> {
                             controller: context
                                 .read<RegisterProvider>()
                                 .pwdCheckController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 2.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                            ),
                             validator: (str) {
                               if (str!.isEmpty) {
                                 return '비밀번호가 일치하지 않습니다';
@@ -285,24 +232,6 @@ class _RegisterViewState extends State<RegisterView> {
                             controller:
                                 context.read<RegisterProvider>().nickController,
                             autovalidateMode: AutovalidateMode.disabled,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 2.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                            ),
                             validator: (str) {
                               if (str!.isEmpty) {
                                 return '사용하실 닉네임을 입력해 주세요';

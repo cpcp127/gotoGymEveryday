@@ -46,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
                     : provider.pageIndex == 1
                         ? const ChartView()
                         : provider.pageIndex == 2
-                            ? ArticleView()
+                            ? const ArticleView()
                             : const AccountView());
           } else {
             return GestureDetector(
@@ -65,26 +65,7 @@ class _HomeViewState extends State<HomeView> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: TextFormField(
-
                             controller: provider.emailController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 2.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -101,22 +82,6 @@ class _HomeViewState extends State<HomeView> {
                                   child: Icon(provider.showPwd == true
                                       ? Icons.visibility
                                       : Icons.visibility_off)),
-                              border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 2.0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12.0)),
-                              ),
                             ),
                           ),
                         ),
@@ -174,13 +139,10 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-
-
     (() async {
       final homeProvider = Provider.of<HomeProvider>(context, listen: false);
       await homeProvider.autoLoginCheck();
     })();
     super.initState();
   }
-
 }

@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,19 +49,9 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAdlZN9Fz-cD7-KG7NYGom4g4DDOwabKKQ',
-    appId: '1:1076846971874:web:79afadd2164c7d5a0d47bb',
-    messagingSenderId: '1076846971874',
-    projectId: 'every-calendar-2cc3e',
-    authDomain: 'every-calendar-2cc3e.firebaseapp.com',
-    storageBucket: 'every-calendar-2cc3e.appspot.com',
-    measurementId: 'G-FB39VSE32C',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAzm1URteaNkhjuE-32DAx1c7Hyovg6Kiw',
-    appId: '1:1076846971874:android:6b3909705aa9b9220d47bb',
+    appId: '1:1076846971874:android:2183380ee6b31e110d47bb',
     messagingSenderId: '1076846971874',
     projectId: 'every-calendar-2cc3e',
     storageBucket: 'every-calendar-2cc3e.appspot.com',
@@ -68,14 +64,5 @@ class DefaultFirebaseOptions {
     projectId: 'every-calendar-2cc3e',
     storageBucket: 'every-calendar-2cc3e.appspot.com',
     iosBundleId: 'com.example.calendarEvery',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC2nh4rYzoSERpoHCfrLzlyaB2FB1_yY4o',
-    appId: '1:1076846971874:ios:3a5ab36687aad5000d47bb',
-    messagingSenderId: '1076846971874',
-    projectId: 'every-calendar-2cc3e',
-    storageBucket: 'every-calendar-2cc3e.appspot.com',
-    iosBundleId: 'com.example.calendarEvery.RunnerTests',
   );
 }

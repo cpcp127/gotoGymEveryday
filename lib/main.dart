@@ -92,6 +92,24 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           //fontFamily: 'Agro',
           useMaterial3: true,
+          inputDecorationTheme: const InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius:
+              BorderRadius.all(Radius.circular(12.0)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide:
+              BorderSide(color: Colors.black, width: 1.0),
+              borderRadius:
+              BorderRadius.all(Radius.circular(12.0)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+              BorderSide(color: Colors.black, width: 2.0),
+              borderRadius:
+              BorderRadius.all(Radius.circular(12.0)),
+            ),
+          ),
           bottomSheetTheme: const BottomSheetThemeData(
             elevation: 0,
             backgroundColor: Colors.white,
