@@ -1,4 +1,5 @@
 import 'package:calendar_every/model/user_model.dart';
+import 'package:calendar_every/singleton/shared_prefrence_singleton.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,17 +17,24 @@ class UserService {
   UserModel userModel = UserModel('email', 'nickname', 'photoUrl');
 
   Future<void> initUser() async {
+    await SharedPreferencesSingleton().getAutoLogin().then((value) async {
+      if(value==null){
+
+      }else{
+        await FirebaseFirestore.instance
+            .collection(value[0])
+            .doc('info')
+            .get()
+            .then((value) {
+          userModel = UserModel(value.data()!['email'], value.data()!['nickname'],
+              value.data()!['image']);
+        });
+      }
+    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getStringList('auto_info') == null) {
     } else {
-      await FirebaseFirestore.instance
-          .collection(prefs.getStringList('auto_info')![0])
-          .doc('info')
-          .get()
-          .then((value) {
-        userModel = UserModel(value.data()!['email'], value.data()!['nickname'],
-            value.data()!['image']);
-      });
+
     }
   }
 }

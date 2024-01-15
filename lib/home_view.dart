@@ -172,11 +172,13 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-    super.initState();
+
 
     (() async {
       final homeProvider = Provider.of<HomeProvider>(context, listen: false);
       await homeProvider.autoLoginCheck();
     })();
+    super.initState();
   }
+
 }

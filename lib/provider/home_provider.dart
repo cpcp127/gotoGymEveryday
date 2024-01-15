@@ -1,3 +1,4 @@
+import 'package:calendar_every/singleton/shared_prefrence_singleton.dart';
 import 'package:calendar_every/toast/show_toast.dart';
 import 'package:calendar_every/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,7 +22,9 @@ class HomeProvider extends ChangeNotifier {
   int get pageIndex => _pageIndex;
 
   bool get autoLogin => _autoLogin;
+
   bool get loginLoading => _loginLoading;
+
   bool get showPwd => _showPwd;
 
   void resetProvider() {
@@ -39,16 +42,16 @@ class HomeProvider extends ChangeNotifier {
   }
 
   Future<void> autoLoginCheck() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getStringList('auto_info') == null) {
-      _autoLogin = false;
-      notifyListeners();
-    } else {
-      await UserService.instance.initUser();
-      _autoLogin = true;
-      notifyListeners();
-    }
-    // notifyListeners();
+    await SharedPreferencesSingleton().getAutoLogin().then((value) async {
+      if (value == null) {
+        _autoLogin = false;
+        notifyListeners();
+      } else {
+        await UserService.instance.initUser();
+        _autoLogin = true;
+        notifyListeners();
+      }
+    });
   }
 
   Future<void> loginFirebase() async {
@@ -67,9 +70,8 @@ class HomeProvider extends ChangeNotifier {
           .then((value) async {
         await UserService.instance.initUser();
       });
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setStringList('auto_info',
-          [_emailController.text.trim(), _pwdController.text.trim()]);
+      await SharedPreferencesSingleton()
+          .setAutoInfo(_emailController.text, _pwdController.text);
       await UserService.instance.initUser();
       showToast('${UserService.instance.userModel.nickname}님 오늘도 오운완하세요!');
       _autoLogin = true;

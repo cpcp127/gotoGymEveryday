@@ -1,5 +1,6 @@
 import 'package:calendar_every/model/user_model.dart';
 import 'package:calendar_every/provider/home_provider.dart';
+import 'package:calendar_every/singleton/shared_prefrence_singleton.dart';
 import 'package:calendar_every/toast/show_toast.dart';
 import 'package:calendar_every/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,8 +22,7 @@ class AccountProvider extends ChangeNotifier {
       _isLoading = true;
       notifyListeners();
       await FirebaseAuth.instance.signOut();
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.clear();
+      SharedPreferencesSingleton().clearPreferenceValue();
       UserService.instance.userModel = UserModel('', '', '');
       _isLoading = false;
       await homeProvider.autoLoginCheck();
