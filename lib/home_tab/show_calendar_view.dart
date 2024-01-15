@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calendar_every/provider/show_calendar_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -157,7 +158,6 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                                           GestureDetector(
                                             onTap: () {
                                               Navigator.pop(context);
-                                              Navigator.pop(context);
                                             },
                                             child: Container(
                                               width: 50,
@@ -220,16 +220,21 @@ class _ShowCalendarViewState extends State<ShowCalendarView> {
                             itemCount: provider
                                 .events[selectDay]!.single.photoList.length,
                             itemBuilder: (context, index) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  image: DecorationImage(
-                                      image: NetworkImage(provider
-                                          .events[selectDay]!
-                                          .single
-                                          .photoList[index]),
-                                      fit: BoxFit.cover),
-                                ),
+                              return CachedNetworkImage(
+                                imageUrl: provider
+                                    .events[selectDay]!.single.photoList[index],
+                                imageBuilder: (context, imageProvider) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover),
+                                        borderRadius:
+                                            BorderRadius.circular(16)),
+                                  );
+                                },
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator()),
                               );
                             }),
                       ),

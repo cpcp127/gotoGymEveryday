@@ -1,5 +1,6 @@
 import 'package:calendar_every/home_view.dart';
 import 'package:calendar_every/provider/account_provider.dart';
+import 'package:calendar_every/provider/article_provider.dart';
 import 'package:calendar_every/provider/chart_provider.dart';
 import 'package:calendar_every/provider/home_provider.dart';
 import 'package:calendar_every/provider/register_provider.dart';
@@ -44,6 +45,9 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => AccountProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => ArticleProvider(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -86,7 +90,7 @@ class MyApp extends StatelessWidget {
           splashFactory: NoSplash.splashFactory,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           scaffoldBackgroundColor: Colors.white,
-          fontFamily: 'Agro',
+          //fontFamily: 'Agro',
           useMaterial3: true,
           bottomSheetTheme: const BottomSheetThemeData(
             elevation: 0,

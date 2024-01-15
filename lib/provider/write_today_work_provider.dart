@@ -20,6 +20,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
   List<XFile> _imageList = [];
   final PageController _pageController = PageController();
   bool _isLoading = false;
+  bool _uploadArticle = false;
 
   List<String> get workList => _workList;
 
@@ -35,47 +36,65 @@ class WriteTodayWorkProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
+  bool get uploadArticle => _uploadArticle;
+
   Future<void> stepContinue(context, DateTime date) async {
     if (_pageIndex == 0) {
       if (_workList.isEmpty) {
         showToast('1개 이상 선택해 주세요');
       } else {
         _pageIndex++;
+        notifyListeners();
       }
-    } else if (_pageIndex == 1) {
-      _pageIndex++;
     } else {
       _isLoading = true;
       notifyListeners();
-      for (int i = 0; i < imageList.length; i++) {
-        await FirebaseStorage.instance
-            .ref(
-                '${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일').format(date)}/${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일').format(date)} $i')
-            .putFile(File(imageList[i].path))
-            .then((val) async {
-          imageUrlList.add(await val.ref.getDownloadURL());
+      if (imageList.isEmpty) {
+        _isLoading = false;
+        notifyListeners();
+        showToast('사진을 업로드 해주세요');
+      } else {
+        for (int i = 0; i < imageList.length; i++) {
+          await FirebaseStorage.instance
+              .ref(
+                  '${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일').format(date)}/${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일').format(date)} $i')
+              .putFile(File(imageList[i].path))
+              .then((val) async {
+            imageUrlList.add(await val.ref.getDownloadURL());
+          });
+        }
+        //storage에 사진 저장후 사진주소를 받아서 Firestore에 저장
+        await FirebaseFirestore.instance
+            .collection(UserService.instance.userModel.email)
+            .doc('운동기록')
+            .collection(DateFormat('yyyy년MM월').format(date))
+            .doc(DateFormat('yyyy년MM월dd일').format(date))
+            .set({
+          'date': date.toLocal(),
+          'datetime': (DateFormat('yyyy년MM월dd일').format(date)),
+          'title': _workList.toString(),
+          'subtitle': textEditingController.text,
+          'photoList': imageUrlList,
+        }).then((value) async {
+          if (_uploadArticle == true) {
+            await FirebaseFirestore.instance
+                .collection('article')
+                .add({
+              'upload_date': date.toLocal(),
+              'title': _workList,
+              'subtitle': textEditingController.text,
+              'photoList': imageUrlList,
+            });
+          } else {}
+
+          await Provider.of<ShowCalendarProvider>(context, listen: false)
+              .getFireStore(date, context);
+          Navigator.of(context).pop();
         });
       }
-      //storage에 사진 저장후 사진주소를 받아서 Firestore에 저장
-      await FirebaseFirestore.instance
-          .collection(UserService.instance.userModel.email)
-          .doc('운동기록')
-          .collection(DateFormat('yyyy년MM월').format(date))
-          .doc(DateFormat('yyyy년MM월dd일').format(date))
-          .set({
-        'date': date.toLocal(),
-        'datetime': (DateFormat('yyyy년MM월dd일').format(date)),
-        'title': _workList.toString(),
-        'subtitle': textEditingController.text,
-        'photoList': imageUrlList
-      }).then((value) async {
-        await Provider.of<ShowCalendarProvider>(context, listen: false)
-            .getFireStore(date, context);
-        Navigator.of(context).pop();
-      });
-    }
 
-    notifyListeners();
+      notifyListeners();
+    }
   }
 
   void stepPrevious() {
@@ -94,8 +113,8 @@ class WriteTodayWorkProvider extends ChangeNotifier {
 
   Future<void> selectMultiImage() async {
     await picker.pickMultiImage(maxHeight: 1024, maxWidth: 1024).then((value) {
-      if (imageList.length + (value.length) >= 5) {
-        showToast('5장 이하로 선택해주세요');
+      if (imageList.length + (value.length) >= 8) {
+        showToast('8장 이하로 선택해주세요');
       } else {
         for (int i = 0; i < value.length; i++) {
           _imageList.add(value[i]);
@@ -113,6 +132,17 @@ class WriteTodayWorkProvider extends ChangeNotifier {
     _imageUrlList = [];
     _textEditingController.clear();
     _isLoading = false;
+    _uploadArticle = false;
     notifyListeners();
+  }
+
+  void tapUploadArticleBtn() {
+    if (_uploadArticle == false) {
+      _uploadArticle = true;
+      notifyListeners();
+    } else {
+      _uploadArticle = false;
+      notifyListeners();
+    }
   }
 }

@@ -32,6 +32,7 @@ class UserService {
       }
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getStringList('auto_info'));
     if (prefs.getStringList('auto_info') == null) {
     } else {
 
