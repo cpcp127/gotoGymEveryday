@@ -21,7 +21,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
   final PageController _pageController = PageController();
   bool _isLoading = false;
   bool _uploadArticle = false;
-  String _photoRatio = '4:5';
+  String _photoRatio = '1:1';
 
   List<String> get workList => _workList;
 
@@ -77,6 +77,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
           'title': _workList.toString(),
           'subtitle': textEditingController.text,
           'photoList': imageUrlList,
+          'ratio':_photoRatio,
         }).then((value) async {
           if (_uploadArticle == true) {
             await FirebaseFirestore.instance.collection('article').add({
@@ -88,6 +89,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
               'title': _workList,
               'subtitle': textEditingController.text,
               'photoList': imageUrlList,
+              'ratio':_photoRatio,
             });
           } else {}
 
@@ -150,7 +152,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
     }
   }
   void tapHorizontalBtn(){
-    _photoRatio='16:9';
+    _photoRatio='1:1';
     notifyListeners();
   }
   void tapVerticalBtn(){

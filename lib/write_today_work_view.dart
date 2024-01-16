@@ -183,30 +183,53 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 50),
-          Row(
+          provider.imageList.isEmpty?Container():Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              GestureDetector(
-                onTap: () {
-                  provider.tapHorizontalBtn();
-                },
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  color: Colors.red,
-                  child: Text('16:9'),
+              Flexible(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    provider.tapHorizontalBtn();
+                  },
+                  child: Container(
+                    height: 50,
+                    color: Colors.white,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 5),
+                          Icon(Icons.square_outlined),
+                          Text('1:1'),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  provider.tapVerticalBtn();
-                },
-                child: Container(
-                    width: 50,
+              Flexible(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: () {
+                    provider.tapVerticalBtn();
+                  },
+                  child: Container(
                     height: 50,
-                    color: Colors.black,
-                    child: Text('4:5')),
+                    color: Colors.white,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 5),
+                          Transform.rotate(
+                              angle: 3.14 / 2,
+                              child: Icon(Icons.rectangle_outlined)),
+                          Text('4:5'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -215,30 +238,32 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
               await provider.selectMultiImage();
             },
             child: provider.imageList.isEmpty
-                ? Container(
-                    width: 360,
-                    height: 450,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey, width: 2)),
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Icon(
-                          Icons.photo_camera,
-                          size: 25,
-                        ),
-                        SizedBox(height: 5),
-                        Text('8장 이하로 올려주세요')
-                      ],
+                ? Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height:MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey, width: 2)),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Icon(
+                            Icons.photo_camera,
+                            size: 25,
+                          ),
+                          SizedBox(height: 5),
+                          Text('8장 이하로 올려주세요')
+                        ],
+                      ),
                     ),
-                  )
-                : SizedBox(
-                    width: 360,
-                    height: provider.photoRatio == '4:5'
-                        ? (MediaQuery.of(context).size.width) / 4 * 5
-                        : (MediaQuery.of(context).size.width) / 16 * 9,
+                )
+                : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: AspectRatio(
+                    aspectRatio: provider.photoRatio=='1:1'?1/1:4/5,
                     child: PageView.builder(
                         scrollDirection: Axis.horizontal,
                         controller: provider.pageController,
@@ -247,15 +272,17 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                           return Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
+                              color: Colors.grey.withOpacity(0.2),
                               image: DecorationImage(
-                                  image: FileImage(
-                                    File(provider.imageList[index].path),
-                                  ),
-                                  fit: BoxFit.cover),
+                                image: FileImage(
+                                  File(provider.imageList[index].path),
+                                ),fit: BoxFit.cover
+                              ),
                             ),
                           );
                         }),
                   ),
+                ),
           ),
           const SizedBox(height: 16),
           Container(
