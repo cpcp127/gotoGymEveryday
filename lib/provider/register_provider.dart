@@ -89,6 +89,7 @@ class RegisterProvider extends ChangeNotifier {
             email: emailController.text.trim(),
             password: pwdController.text.trim())
         .then((value) {
+          //uid 값을 키값으로 쓰기! value.user!.uid
       FirebaseStorage.instance
           .ref('user_profile_image/${emailController.text.trim()}')
           .putFile(File(_imageList.first.path))
