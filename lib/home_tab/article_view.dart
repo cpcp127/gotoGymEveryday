@@ -51,11 +51,9 @@ class _ArticleViewState extends State<ArticleView> {
                                         width: 6,
                                       ),
                                       CachedNetworkImage(
-                                        imageUrl:
-                                            ((snapshotUser.data!.data() ??
-                                                {}))['image'],
-                                        imageBuilder:
-                                            (context, imageProvider) {
+                                        imageUrl: ((snapshotUser.data!.data() ??
+                                            {}))['image'],
+                                        imageBuilder: (context, imageProvider) {
                                           return CircleAvatar(
                                             radius: 20,
                                             backgroundImage: imageProvider,
@@ -99,8 +97,11 @@ class _ArticleViewState extends State<ArticleView> {
                                   const SizedBox(
                                     height: 6,
                                   ),
-                                  SizedBox(
-                                    height: (MediaQuery.of(context).size.width*2)-40,
+                                  AspectRatio(
+                                    aspectRatio:
+                                        documentSnapshot.get('ratio') == '1:1'
+                                            ? 1 / 1
+                                            : 4 / 5,
                                     child: PageView.builder(
                                       scrollDirection: Axis.horizontal,
                                       controller: provider.pageController,
@@ -109,10 +110,12 @@ class _ArticleViewState extends State<ArticleView> {
                                           .length,
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
-                                          onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (_) {
-                                              return HeroView(photoUrl: documentSnapshot
-                                                  .get('photoList')[index]);
+                                          onTap: () {
+                                            Navigator.push(context,
+                                                MaterialPageRoute(builder: (_) {
+                                              return HeroView(
+                                                  photoUrl: documentSnapshot
+                                                      .get('photoList')[index]);
                                             }));
                                           },
                                           child: Hero(

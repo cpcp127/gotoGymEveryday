@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:calendar_every/provider/write_today_work_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -123,8 +124,7 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                                                             image: FileImage(
                                                               File(provider
                                                                   .imageList[
-                                                                      index]
-                                                                  .path),
+                                                                      index]),
                                                             ),
                                                             fit: BoxFit.cover),
                                                       ),
@@ -183,66 +183,86 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 50),
-          provider.imageList.isEmpty?Container():Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Flexible(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: () {
-                    provider.tapHorizontalBtn();
-                  },
-                  child: Container(
-                    height: 50,
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                        children: [
-                          SizedBox(height: 5),
-                          Icon(Icons.square_outlined),
-                          Text('1:1'),
-                        ],
+          provider.imageList.isEmpty
+              ? Container()
+              : Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          provider.tapHorizontalBtn();
+                        },
+                        child: Container(
+                          height: 50,
+                          color: Colors.white,
+                          child: Center(
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 5),
+                                Icon(Icons.square_outlined,
+                                    color: provider.photoRatio == '1:1'
+                                        ? Colors.black
+                                        : Colors.grey),
+                                Text(
+                                  '1:1',
+                                  style: TextStyle(
+                                      color: provider.photoRatio == '1:1'
+                                          ? Colors.black
+                                          : Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: () {
-                    provider.tapVerticalBtn();
-                  },
-                  child: Container(
-                    height: 50,
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                        children: [
-                          SizedBox(height: 5),
-                          Transform.rotate(
-                              angle: 3.14 / 2,
-                              child: Icon(Icons.rectangle_outlined)),
-                          Text('4:5'),
-                        ],
+                    Flexible(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          provider.tapVerticalBtn();
+                        },
+                        child: Container(
+                          height: 50,
+                          color: Colors.white,
+                          child: Center(
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 5),
+                                Transform.rotate(
+                                    angle: 3.14 / 2,
+                                    child: Icon(Icons.rectangle_outlined,
+                                        color: provider.photoRatio == '4:5'
+                                            ? Colors.black
+                                            : Colors.grey)),
+                                Text(
+                                  '4:5',
+                                  style: TextStyle(
+                                      color: provider.photoRatio == '4:5'
+                                          ? Colors.black
+                                          : Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
-            ],
-          ),
           GestureDetector(
             onTap: () async {
               await provider.selectMultiImage();
             },
             child: provider.imageList.isEmpty
                 ? Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height:MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.grey, width: 2)),
@@ -259,30 +279,71 @@ class _WriteTodayWorkViewState extends State<WriteTodayWorkView> {
                         ],
                       ),
                     ),
-                )
+                  )
                 : Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: AspectRatio(
-                    aspectRatio: provider.photoRatio=='1:1'?1/1:4/5,
-                    child: PageView.builder(
-                        scrollDirection: Axis.horizontal,
-                        controller: provider.pageController,
-                        itemCount: provider.imageList.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.grey.withOpacity(0.2),
-                              image: DecorationImage(
-                                image: FileImage(
-                                  File(provider.imageList[index].path),
-                                ),fit: BoxFit.cover
-                              ),
-                            ),
-                          );
-                        }),
+                    padding: const EdgeInsets.all(16.0),
+                    child: AspectRatio(
+                      aspectRatio: provider.photoRatio == '1:1' ? 1 / 1 : 4 / 5,
+                      child: PageView.builder(
+                          scrollDirection: Axis.horizontal,
+                          controller: provider.pageController,
+                          itemCount: provider.imageList.length,
+                          itemBuilder: (context, index) {
+                            return Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.grey.withOpacity(0.2),
+                                    image: DecorationImage(
+                                        image: FileImage(
+                                          File(provider.imageList[index]),
+                                        ),
+                                        fit: BoxFit.cover),
+                                  ),
+                                ),
+                                Positioned.fill(
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        GestureDetector(
+                                          child: Container(
+                                              width: 44,
+                                              height: 44,
+                                              color: Colors.transparent,
+                                              child: const Icon(
+                                                Icons.auto_fix_normal_outlined,
+                                                size: 30,
+                                              )),
+                                          onTap: () async {
+                                            await provider.cropImage(index);
+                                          },
+                                        ),
+                                        const SizedBox(width: 10),
+                                        GestureDetector(
+                                          child: Container(
+                                              width: 44,
+                                              height: 44,
+                                              color: Colors.transparent,
+                                              child: const Icon(
+                                                Icons.highlight_remove_outlined,
+                                                size: 30,
+                                              )),
+                                          onTap: () {
+                                            provider.deleteImage(index);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          }),
+                    ),
                   ),
-                ),
           ),
           const SizedBox(height: 16),
           Container(

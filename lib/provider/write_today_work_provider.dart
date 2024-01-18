@@ -5,6 +5,7 @@ import 'package:calendar_every/toast/show_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
   List<String> _imageUrlList = [];
   int _pageIndex = 0;
   final TextEditingController _textEditingController = TextEditingController();
-  List<XFile> _imageList = [];
+  List<String> _imageList = [];
   final PageController _pageController = PageController();
   bool _isLoading = false;
   bool _uploadArticle = false;
@@ -31,13 +32,14 @@ class WriteTodayWorkProvider extends ChangeNotifier {
 
   TextEditingController get textEditingController => _textEditingController;
 
-  List<XFile> get imageList => _imageList;
+  List<String> get imageList => _imageList;
 
   PageController get pageController => _pageController;
 
   bool get isLoading => _isLoading;
 
   bool get uploadArticle => _uploadArticle;
+
   String get photoRatio => _photoRatio;
 
   Future<void> stepContinue(context, DateTime date) async {
@@ -60,7 +62,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
           await FirebaseStorage.instance
               .ref(
                   '${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일').format(date)}/${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일').format(date)} $i')
-              .putFile(File(imageList[i].path))
+              .putFile(File(imageList[i]))
               .then((val) async {
             imageUrlList.add(await val.ref.getDownloadURL());
           });
@@ -77,7 +79,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
           'title': _workList.toString(),
           'subtitle': textEditingController.text,
           'photoList': imageUrlList,
-          'ratio':_photoRatio,
+          'ratio': _photoRatio,
         }).then((value) async {
           if (_uploadArticle == true) {
             await FirebaseFirestore.instance.collection('article').add({
@@ -89,7 +91,11 @@ class WriteTodayWorkProvider extends ChangeNotifier {
               'title': _workList,
               'subtitle': textEditingController.text,
               'photoList': imageUrlList,
-              'ratio':_photoRatio,
+              'ratio': _photoRatio,
+              'like': {
+                'count': 0,
+                'people': [],
+              }
             });
           } else {}
 
@@ -123,7 +129,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
         showToast('8장 이하로 선택해주세요');
       } else {
         for (int i = 0; i < value.length; i++) {
-          _imageList.add(value[i]);
+          _imageList.add(value[i].path);
         }
       }
     });
@@ -151,12 +157,40 @@ class WriteTodayWorkProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  void tapHorizontalBtn(){
-    _photoRatio='1:1';
+
+  void tapHorizontalBtn() {
+    _photoRatio = '1:1';
     notifyListeners();
   }
-  void tapVerticalBtn(){
-    _photoRatio='4:5';
+
+  void tapVerticalBtn() {
+    _photoRatio = '4:5';
+    notifyListeners();
+  }
+
+  void deleteImage(int index) {
+    _imageList.removeAt(index);
+    notifyListeners();
+  }
+
+  Future<void> cropImage(index) async {
+    await ImageCropper()
+        .cropImage(
+            aspectRatio: _photoRatio == '1:1'
+                ? const CropAspectRatio(ratioX: 1, ratioY: 1)
+                : const CropAspectRatio(ratioX: 4, ratioY: 5),
+            uiSettings: [
+              AndroidUiSettings(
+                lockAspectRatio: true,
+                hideBottomControls: true,
+              )
+            ],
+            sourcePath: _imageList[index])
+        .then((cropImage) {
+      if (cropImage != null) {
+        _imageList[index] = cropImage.path;
+      } else {}
+    });
     notifyListeners();
   }
 }
