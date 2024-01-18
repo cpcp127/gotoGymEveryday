@@ -21,9 +21,10 @@ class SharedPreferencesSingleton {
     return list;
   }
 
-  Future setAutoInfo(String email, String pwd) async {
+  Future setAutoInfo(String uid,String email, String pwd) async {
     var pref = await SharedPreferences.getInstance();
     pref.setStringList('auto_info', [
+      uid,
       email.trim(),
       pwd.trim(),
     ]);

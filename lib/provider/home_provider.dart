@@ -63,15 +63,15 @@ class HomeProvider extends ChangeNotifier {
             email: _emailController.text.trim(),
             password: _pwdController.text.trim())
         .then((value) async {
-      await FirebaseFirestore.instance
-          .collection(emailController.text.trim())
-          .doc('info')
-          .get()
-          .then((value) async {
-        await UserService.instance.initUser();
-      });
+      // await FirebaseFirestore.instance
+      //     .collection('user')
+      //     .doc(value.user!.uid)
+      //     .get()
+      //     .then((value) async {
+      //   await UserService.instance.initUser();
+      // });
       await SharedPreferencesSingleton()
-          .setAutoInfo(_emailController.text, _pwdController.text);
+          .setAutoInfo(value.user!.uid,_emailController.text, _pwdController.text);
       await UserService.instance.initUser();
       showToast('${UserService.instance.userModel.nickname}님 오늘도 오운완하세요!');
       _autoLogin = true;

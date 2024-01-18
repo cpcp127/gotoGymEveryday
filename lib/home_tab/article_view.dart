@@ -29,8 +29,8 @@ class _ArticleViewState extends State<ArticleView> {
                   builder: (context, provider, child) {
                     return StreamBuilder(
                         stream: FirebaseFirestore.instance
-                            .collection(UserService.instance.userModel.email)
-                            .doc('info')
+                            .collection('user')
+                            .doc(UserService.instance.userModel.uid)
                             .snapshots(),
                         builder: (context, snapshotUser) {
                           if (!snapshotUser.hasData) {

@@ -14,7 +14,7 @@ class UserService {
     // create instance
   }
 
-  UserModel userModel = UserModel('email', 'nickname', 'photoUrl');
+  UserModel userModel = UserModel('uid','email', 'nickname', 'photoUrl');
 
   Future<void> initUser() async {
     await SharedPreferencesSingleton().getAutoLogin().then((value) async {
@@ -22,11 +22,11 @@ class UserService {
 
       }else{
         await FirebaseFirestore.instance
-            .collection(value[0])
-            .doc('info')
+            .collection('user')
+            .doc(value[0])
             .get()
             .then((value) {
-          userModel = UserModel(value.data()!['email'], value.data()!['nickname'],
+          userModel = UserModel(value.data()!['uid'],value.data()!['email'], value.data()!['nickname'],
               value.data()!['image']);
         });
       }

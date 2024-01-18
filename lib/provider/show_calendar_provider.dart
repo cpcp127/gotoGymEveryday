@@ -43,8 +43,8 @@ class ShowCalendarProvider extends ChangeNotifier {
   Future<void> getFireStore(DateTime date, BuildContext context) async {
     _events.clear();
     await FirebaseFirestore.instance
-        .collection(UserService.instance.userModel.email)
-        .doc('운동기록')
+        .collection('운동기록')
+        .doc((UserService.instance.userModel.uid))
         .collection(DateFormat('yyyy년MM월').format(date))
         .get()
         .then((value) {
@@ -104,7 +104,7 @@ class ShowCalendarProvider extends ChangeNotifier {
     notifyListeners();
     await FirebaseStorage.instance
         .ref(
-            '${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일/').format(date)}')
+            '${UserService.instance.userModel.uid} ${DateFormat('yyyy년MM월dd일/').format(date)}')
         .listAll()
         .then((value) {
       List<String> pathList = [];
@@ -119,8 +119,8 @@ class ShowCalendarProvider extends ChangeNotifier {
       }
     });
     await FirebaseFirestore.instance
-        .collection(UserService.instance.userModel.email)
-        .doc('운동기록')
+        .collection('운동기록')
+        .doc((UserService.instance.userModel.uid))
         .collection(DateFormat('yyyy년MM월').format(date))
         .doc(DateFormat('yyyy년MM월dd일').format(date))
         .delete()

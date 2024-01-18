@@ -37,8 +37,8 @@ class ChartProvider extends ChangeNotifier {
   Future<void> getWorkDayOfMonth(DateTime dateTime) async {
     _events.clear();
     await FirebaseFirestore.instance
-        .collection(UserService.instance.userModel.email)
-        .doc('운동기록')
+        .collection('운동기록')
+        .doc((UserService.instance.userModel.uid))
         .collection(DateFormat('yyyy년MM월').format(dateTime))
         .get()
         .then((value) {
@@ -66,8 +66,8 @@ class ChartProvider extends ChangeNotifier {
       DateTime dateTime, LinkedHashMap<DateTime, List<Event>> eventMap) async {
     eventMap.clear();
     await FirebaseFirestore.instance
-        .collection(UserService.instance.userModel.email)
-        .doc('운동기록')
+        .collection('운동기록')
+        .doc((UserService.instance.userModel.uid))
         .collection(DateFormat('yyyy년MM월').format(dateTime))
         .get()
         .then((value) {

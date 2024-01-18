@@ -61,7 +61,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
         for (int i = 0; i < imageList.length; i++) {
           await FirebaseStorage.instance
               .ref(
-                  '${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일').format(date)}/${UserService.instance.userModel.email} ${DateFormat('yyyy년MM월dd일').format(date)} $i')
+                  '${UserService.instance.userModel.uid} ${DateFormat('yyyy년MM월dd일').format(date)}/${UserService.instance.userModel.uid} ${DateFormat('yyyy년MM월dd일').format(date)} $i')
               .putFile(File(imageList[i]))
               .then((val) async {
             imageUrlList.add(await val.ref.getDownloadURL());
@@ -69,8 +69,8 @@ class WriteTodayWorkProvider extends ChangeNotifier {
         }
         //storage에 사진 저장후 사진주소를 받아서 Firestore에 저장
         await FirebaseFirestore.instance
-            .collection(UserService.instance.userModel.email)
-            .doc('운동기록')
+            .collection('운동기록')
+            .doc(UserService.instance.userModel.uid)
             .collection(DateFormat('yyyy년MM월').format(date))
             .doc(DateFormat('yyyy년MM월dd일').format(date))
             .set({
@@ -84,7 +84,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
           if (_uploadArticle == true) {
             await FirebaseFirestore.instance.collection('article').add({
               'upload_user': {
-                'id': UserService.instance.userModel.email.trim(),
+                'id': UserService.instance.userModel.uid.trim(),
                 'nickname': UserService.instance.userModel.nickname
               },
               'upload_date': date.toLocal(),

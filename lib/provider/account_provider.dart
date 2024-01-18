@@ -23,7 +23,7 @@ class AccountProvider extends ChangeNotifier {
       notifyListeners();
       await FirebaseAuth.instance.signOut();
       SharedPreferencesSingleton().clearPreferenceValue();
-      UserService.instance.userModel = UserModel('', '', '');
+      UserService.instance.userModel = UserModel('', '', '','');
       _isLoading = false;
       await homeProvider.autoLoginCheck();
       homeProvider.resetProvider();

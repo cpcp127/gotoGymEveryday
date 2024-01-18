@@ -95,12 +95,13 @@ class RegisterProvider extends ChangeNotifier {
           .putFile(File(_imageList.first.path))
           .then((val) async {
         FirebaseFirestore.instance
-            .collection(emailController.text.trim())
-            .doc('info')
+            .collection('user')
+            .doc(value.user!.uid)
             .set({
           'email': emailController.text.trim(),
           'nickname': nickController.text.trim(),
           'image': await val.ref.getDownloadURL(),
+          'uid':value.user!.uid,
         });
       });
       context.pop();
