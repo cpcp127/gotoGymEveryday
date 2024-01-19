@@ -93,6 +93,7 @@ class MyApp extends StatelessWidget {
           //fontFamily: 'Agro',
           useMaterial3: true,
           inputDecorationTheme: const InputDecorationTheme(
+            contentPadding: EdgeInsets.all(8),
             border: OutlineInputBorder(
               borderRadius:
               BorderRadius.all(Radius.circular(12.0)),

@@ -95,7 +95,10 @@ class WriteTodayWorkProvider extends ChangeNotifier {
               'like': {
                 'count': 0,
                 'people': [],
-              }
+              },
+              'comment':{
+
+              },
             });
           } else {}
 
