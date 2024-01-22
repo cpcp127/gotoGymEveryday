@@ -96,9 +96,7 @@ class WriteTodayWorkProvider extends ChangeNotifier {
                 'count': 0,
                 'people': [],
               },
-              'comment':{
-
-              },
+              'comment':0,
             });
           } else {}
 

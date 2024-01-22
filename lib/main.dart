@@ -1,7 +1,9 @@
+import 'package:calendar_every/comment_view.dart';
 import 'package:calendar_every/home_view.dart';
 import 'package:calendar_every/provider/account_provider.dart';
 import 'package:calendar_every/provider/article_provider.dart';
 import 'package:calendar_every/provider/chart_provider.dart';
+import 'package:calendar_every/provider/comment_provider.dart';
 import 'package:calendar_every/provider/home_provider.dart';
 import 'package:calendar_every/provider/register_provider.dart';
 import 'package:calendar_every/provider/show_calendar_provider.dart';
@@ -14,7 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -23,6 +26,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  timeago.setLocaleMessages('kr', KrCustomMessages());
   await UserService.instance.initUser();
   runApp(
     MultiProvider(
@@ -48,6 +53,9 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => ArticleProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => CommentProvider(),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -61,6 +69,11 @@ final GoRouter _router = GoRouter(
       path: '/',
       builder: (context, state) => const HomeView(),
       routes: [
+        GoRoute(
+          path: 'comment',
+          builder: (context, state) =>
+              CommentView(articleId: state.extra as String),
+        ),
         GoRoute(
           path: 'register',
           builder: (context, state) => const RegisterView(),
@@ -95,20 +108,15 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme: const InputDecorationTheme(
             contentPadding: EdgeInsets.all(8),
             border: OutlineInputBorder(
-              borderRadius:
-              BorderRadius.all(Radius.circular(12.0)),
+              borderRadius: BorderRadius.all(Radius.circular(12.0)),
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide:
-              BorderSide(color: Colors.black, width: 1.0),
-              borderRadius:
-              BorderRadius.all(Radius.circular(12.0)),
+              borderSide: BorderSide(color: Colors.black, width: 1.0),
+              borderRadius: BorderRadius.all(Radius.circular(12.0)),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide:
-              BorderSide(color: Colors.black, width: 2.0),
-              borderRadius:
-              BorderRadius.all(Radius.circular(12.0)),
+              borderSide: BorderSide(color: Colors.black, width: 2.0),
+              borderRadius: BorderRadius.all(Radius.circular(12.0)),
             ),
           ),
           bottomSheetTheme: const BottomSheetThemeData(
@@ -124,4 +132,54 @@ class MyApp extends StatelessWidget {
               showUnselectedLabels: true)),
     );
   }
+}
+
+class KrCustomMessages implements LookupMessages {
+  @override
+  String prefixAgo() => '';
+
+  @override
+  String prefixFromNow() => '';
+
+  @override
+  String suffixAgo() => '';
+
+  @override
+  String suffixFromNow() => '';
+
+  @override
+  String lessThanOneMinute(int seconds) => '방금 전';
+
+  @override
+  String aboutAMinute(int minutes) => '${minutes}분 전';
+
+  @override
+  String minutes(int minutes) => '${minutes}분 전';
+
+  @override
+  String aboutAnHour(int minutes) => '1시간 전';
+
+  @override
+  String hours(int hours) => '${hours}시간 전';
+
+  @override
+  String aDay(int hours) => '${hours}시간 전';
+
+  @override
+  String days(int days) => '${days}일 전';
+
+  @override
+  String aboutAMonth(int days) => '${days}일 전';
+
+  @override
+  String months(int months) => '${months}개월 전';
+
+  @override
+  String aboutAYear(int year) => '${year}년 전';
+
+  @override
+  String years(int years) => '${years}년 전';
+
+  @override
+  String wordSeparator() => ' ';
 }
