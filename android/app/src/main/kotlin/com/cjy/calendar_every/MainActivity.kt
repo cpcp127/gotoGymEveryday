@@ -1,4 +1,4 @@
-package com.cjy.calendar_every
+package com.cjy.gotogym
 
 import io.flutter.embedding.android.FlutterActivity
 

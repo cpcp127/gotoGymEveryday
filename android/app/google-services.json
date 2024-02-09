@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1076846971874:android:2183380ee6b31e110d47bb",
+        "mobilesdk_app_id": "1:1076846971874:android:a6677bf1a1519cd30d47bb",
         "android_client_info": {
-          "package_name": "com.cjy.calendar_every"
+          "package_name": "com.cjy.gotogym"
         }
       },
       "oauth_client": [],
@@ -26,9 +26,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1076846971874:android:6b3909705aa9b9220d47bb",
+        "mobilesdk_app_id": "1:1076846971874:android:409e7c138bf330f80d47bb",
         "android_client_info": {
-          "package_name": "com.example.calendar_every"
+          "package_name": "com.cjy.riverpodgym"
         }
       },
       "oauth_client": [],
